@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Misa</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/Misa.css">
+    <script>
+      function inhabilitar(){
+          alert("NO");
+          return false;
+      }
+      
+      document.oncontextmenu = inhabilitar;
+      
+      document.addEventListener('DOMContentLoaded', () => {
+          const card = document.querySelector('.card');
+          const text = document.querySelector('.overlay-text');
+          const images = document.querySelectorAll('.card img');
+          const infoBtn = document.querySelector('#infoBtn');
+          let currentImageIndex = 0;
+          let isInfoVisible = false;
+
+          images[0].style.opacity = 1;
+          text.classList.remove('visible'); // Ensure initially hidden
+
+          card.addEventListener('mousemove', (e) => {
+              const rect = card.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const index = Math.floor((x / rect.width) * 120);
+              images.forEach((img, i) => {
+                  img.style.opacity = i === index ? 1 : 0;
+              });
+              currentImageIndex = index;
+              text.innerHTML = `
+                <p class="stat">Misa Hayase</p>
+                <p class="narrative">She is a character in The Super Dimension Fortress Macross television series and The Super Dimension Fortress Macross: Do You Remember Love? film. 
+				A First Lieutenant in the U.N. Spacy, she served as the Tactical Operations Officer on the SDF-1 Macross bridge during Space War I. 
+				Responsible for tactical operations and mission coordination, she is known for her disciplined and serious demeanor.</p>
+                <p class="stat">Name: Misa Hayase</p>
+                <p class="stat">Birthdate: March 3, 1990</p>
+                <p class="stat">Birthplace: Japan</p>
+                <p class="stat">Ethnicity: Japanese</p>
+                <p class="stat">Age: 19 (20 in film)</p>
+                <p class="stat">Blood Type: AB</p>
+                <p class="stat">Height: 168 cm</p>
+                <p class="stat">Measurements: 83-61-88 cm</p>
+                <p class="stat">Gender: Female</p>
+                <p class="stat">Weight: 52 kg</p>
+                <p class="stat">Occupation: Tactical Operations Officer, Level 1 Operator</p>
+                <p class="stat">Rank: First Lieutenant</p>`;
+          });
+
+          infoBtn.addEventListener('click', () => {
+              isInfoVisible = !isInfoVisible;
+              text.classList.toggle('visible', isInfoVisible); // Toggle visibility class
+              infoBtn.textContent = isInfoVisible ? 'HIDE INFO' : 'INFO';
+          });
+
+          card.addEventListener('mouseleave', () => {
+              images.forEach((img, i) => {
+                  img.style.opacity = i === currentImageIndex ? 1 : 0;
+              });
+          });
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+          const card = document.querySelector('.card');
+          const images = document.querySelectorAll('.card img');
+          const playBtn = document.querySelector('#playBtn');
+          const stopBtn = document.querySelector('#stopBtn');
+          let currentImageIndex = 0;
+          let autoPlayInterval = null;
+
+          if (images.length !== 120) {
+              console.error('Expected 120 images, found:', images.length);
+          }
+
+          images[0].style.opacity = 1;
+          stopBtn.disabled = true;
+
+          const updateImage = (index) => {
+              images.forEach((img, i) => {
+                  img.style.opacity = i === index ? 1 : 0;
+              });
+              currentImageIndex = index;
+          };
+
+          const startAutoPlay = () => {
+              if (!autoPlayInterval) {
+                  autoPlayInterval = setInterval(() => {
+                      currentImageIndex = (currentImageIndex + 1) % images.length;
+                      updateImage(currentImageIndex);
+                  }, 50);
+                  playBtn.disabled = true;
+                  stopBtn.disabled = false;
+              }
+          };
+
+          const stopAutoPlay = () => {
+              if (autoPlayInterval) {
+                  clearInterval(autoPlayInterval);
+                  autoPlayInterval = null;
+                  playBtn.disabled = false;
+                  stopBtn.disabled = true;
+              }
+          };
+
+          playBtn.addEventListener('click', startAutoPlay);
+          stopBtn.addEventListener('click', stopAutoPlay);
+
+          let timeout;
+          card.addEventListener('mousemove', (e) => {
+              stopAutoPlay();
+              clearTimeout(timeout);
+              timeout = setTimeout(() => {
+                  const rect = card.getBoundingClientRect();
+                  const x = e.clientX - rect.left;
+                  const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+                  updateImage(index);
+              }, 10);
+          });
+
+          card.addEventListener('mouseleave', () => {
+              updateImage(currentImageIndex);
+          });
+
+          card.addEventListener('keydown', (e) => {
+              stopAutoPlay();
+              if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+                  currentImageIndex--;
+              } else if (e.key === 'ArrowRight' && currentImageIndex < images.length - 1) {
+                  currentImageIndex++;
+              }
+              updateImage(currentImageIndex);
+          });
+
+          card.addEventListener('touchmove', (e) => {
+              stopAutoPlay();
+              e.preventDefault();
+              const touch = e.touches[0];
+              const rect = card.getBoundingClientRect();
+              const x = touch.clientX - rect.left;
+              const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+              updateImage(index);
+          });
+      });
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="indexMenu.html">BACK</a></li>
+        </ul>
+    </nav>
+    <div id="arrow">
+        <h1>&#9668;Misa Hayase&#9658;</h1>
+        <div class="button-container">
+            <button id="playBtn">&#9658; PLAY</button>
+            <button id="stopBtn">&#9632; STOP</button>
+            <button id="infoBtn">INFO</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="overlay-text">
+            <p class="stat">Misa Hayase</p>
+            <p class="narrative">She is a character in The Super Dimension Fortress Macross television series and The Super Dimension Fortress Macross: Do You Remember Love? film. 
+				A First Lieutenant in the U.N. Spacy, she served as the Tactical Operations Officer on the SDF-1 Macross bridge during Space War I. 
+				Responsible for tactical operations and mission coordination, she is known for her disciplined and serious demeanor.</p>
+            <p class="stat">Name: Misa Hayase</p>
+            <p class="stat">Birthdate: March 3, 1990</p>
+            <p class="stat">Birthplace: Japan</p>
+            <p class="stat">Ethnicity: Japanese</p>
+            <p class="stat">Age: 19 (20 in film)</p>
+            <p class="stat">Blood Type: AB</p>
+            <p class="stat">Height: 168 cm</p>
+            <p class="stat">Measurements: 83-61-88 cm</p>
+            <p class="stat">Gender: Female</p>
+            <p class="stat">Weight: 52 kg</p>
+            <p class="stat">Occupation: Tactical Operations Officer, Level 1 Operator</p>
+            <p class="stat">Rank: First Lieutenant</p>
+        </div>
+        <span style="--i:0;"></span>
+        <img src="img/Misa/Misa0.jpg" alt="">
+        <span style="--i:1;"></span>
+        <img src="img/Misa/Misa1.jpg" alt="">
+        <span style="--i:2;"></span>
+        <img src="img/Misa/Misa2.jpg" alt="">
+        <span style="--i:3;"></span>
+        <img src="img/Misa/Misa3.jpg" alt="">
+        <span style="--i:4;"></span>
+        <img src="img/Misa/Misa4.jpg" alt="">
+        <span style="--i:5;"></span>
+        <img src="img/Misa/Misa5.jpg" alt="">
+        <span style="--i:6;"></span>
+        <img src="img/Misa/Misa6.jpg" alt="">
+        <span style="--i:7;"></span>
+        <img src="img/Misa/Misa7.jpg" alt="">
+        <span style="--i:8;"></span>
+        <img src="img/Misa/Misa8.jpg" alt="">
+        <span style="--i:9;"></span>
+        <img src="img/Misa/Misa9.jpg" alt="">
+        <span style="--i:10;"></span>
+        <img src="img/Misa/Misa10.jpg" alt="">
+        <span style="--i:11;"></span>
+        <img src="img/Misa/Misa11.jpg" alt="">
+        <span style="--i:12;"></span>
+        <img src="img/Misa/Misa12.jpg" alt="">
+        <span style="--i:13;"></span>
+        <img src="img/Misa/Misa13.jpg" alt="">
+        <span style="--i:14;"></span>
+        <img src="img/Misa/Misa14.jpg" alt="">
+        <span style="--i:15;"></span>
+        <img src="img/Misa/Misa15.jpg" alt="">
+        <span style="--i:16;"></span>
+        <img src="img/Misa/Misa16.jpg" alt="">
+        <span style="--i:17;"></span>
+        <img src="img/Misa/Misa17.jpg" alt="">
+        <span style="--i:18;"></span>
+        <img src="img/Misa/Misa18.jpg" alt="">
+        <span style="--i:19;"></span>
+        <img src="img/Misa/Misa19.jpg" alt="">
+        <span style="--i:20;"></span>
+        <img src="img/Misa/Misa20.jpg" alt="">
+        <span style="--i:21;"></span>
+        <img src="img/Misa/Misa21.jpg" alt="">
+        <span style="--i:22;"></span>
+        <img src="img/Misa/Misa22.jpg" alt="">
+        <span style="--i:23;"></span>
+        <img src="img/Misa/Misa23.jpg" alt="">
+        <span style="--i:24;"></span>
+        <img src="img/Misa/Misa24.jpg" alt="">
+        <span style="--i:25;"></span>
+        <img src="img/Misa/Misa25.jpg" alt="">
+        <span style="--i:26;"></span>
+        <img src="img/Misa/Misa26.jpg" alt="">
+        <span style="--i:27;"></span>
+        <img src="img/Misa/Misa27.jpg" alt="">
+        <span style="--i:28;"></span>
+        <img src="img/Misa/Misa28.jpg" alt="">
+        <span style="--i:29;"></span>
+        <img src="img/Misa/Misa29.jpg" alt="">
+        <span style="--i:30;"></span>
+        <img src="img/Misa/Misa30.jpg" alt="">
+        <span style="--i:31;"></span>
+        <img src="img/Misa/Misa31.jpg" alt="">
+        <span style="--i:32;"></span>
+        <img src="img/Misa/Misa32.jpg" alt="">
+        <span style="--i:33;"></span>
+        <img src="img/Misa/Misa33.jpg" alt="">
+        <span style="--i:34;"></span>
+        <img src="img/Misa/Misa34.jpg" alt="">
+        <span style="--i:35;"></span>
+        <img src="img/Misa/Misa35.jpg" alt="">
+        <span style="--i:36;"></span>
+        <img src="img/Misa/Misa36.jpg" alt="">
+        <span style="--i:37;"></span>
+        <img src="img/Misa/Misa37.jpg" alt="">
+        <span style="--i:38;"></span>
+        <img src="img/Misa/Misa38.jpg" alt="">
+        <span style="--i:39;"></span>
+        <img src="img/Misa/Misa39.jpg" alt="">
+        <span style="--i:40;"></span>
+        <img src="img/Misa/Misa40.jpg" alt="">
+        <span style="--i:41;"></span>
+        <img src="img/Misa/Misa41.jpg" alt="">
+        <span style="--i:42;"></span>
+        <img src="img/Misa/Misa42.jpg" alt="">
+        <span style="--i:43;"></span>
+        <img src="img/Misa/Misa43.jpg" alt="">
+        <span style="--i:44;"></span>
+        <img src="img/Misa/Misa44.jpg" alt="">
+        <span style="--i:45;"></span>
+        <img src="img/Misa/Misa45.jpg" alt="">
+        <span style="--i:46;"></span>
+        <img src="img/Misa/Misa46.jpg" alt="">
+        <span style="--i:47;"></span>
+        <img src="img/Misa/Misa47.jpg" alt="">
+        <span style="--i:48;"></span>
+        <img src="img/Misa/Misa48.jpg" alt="">
+        <span style="--i:49;"></span>
+        <img src="img/Misa/Misa49.jpg" alt="">
+        <span style="--i:50;"></span>
+        <img src="img/Misa/Misa50.jpg" alt="">
+        <span style="--i:51;"></span>
+        <img src="img/Misa/Misa51.jpg" alt="">
+        <span style="--i:52;"></span>
+        <img src="img/Misa/Misa52.jpg" alt="">
+        <span style="--i:53;"></span>
+        <img src="img/Misa/Misa53.jpg" alt="">
+        <span style="--i:54;"></span>
+        <img src="img/Misa/Misa54.jpg" alt="">
+        <span style="--i:55;"></span>
+        <img src="img/Misa/Misa55.jpg" alt="">
+        <span style="--i:56;"></span>
+        <img src="img/Misa/Misa56.jpg" alt="">
+        <span style="--i:57;"></span>
+        <img src="img/Misa/Misa57.jpg" alt="">
+        <span style="--i:58;"></span>
+        <img src="img/Misa/Misa58.jpg" alt="">
+        <span style="--i:59;"></span>
+        <img src="img/Misa/Misa59.jpg" alt="">
+        <span style="--i:60;"></span>
+        <img src="img/Misa/Misa60.jpg" alt="">
+        <span style="--i:61;"></span>
+        <img src="img/Misa/Misa61.jpg" alt="">
+        <span style="--i:62;"></span>
+        <img src="img/Misa/Misa62.jpg" alt="">
+        <span style="--i:63;"></span>
+        <img src="img/Misa/Misa63.jpg" alt="">
+        <span style="--i:64;"></span>
+        <img src="img/Misa/Misa64.jpg" alt="">
+        <span style="--i:65;"></span>
+        <img src="img/Misa/Misa65.jpg" alt="">
+        <span style="--i:66;"></span>
+        <img src="img/Misa/Misa66.jpg" alt="">
+        <span style="--i:67;"></span>
+        <img src="img/Misa/Misa67.jpg" alt="">
+        <span style="--i:68;"></span>
+        <img src="img/Misa/Misa68.jpg" alt="">
+        <span style="--i:69;"></span>
+        <img src="img/Misa/Misa69.jpg" alt="">
+        <span style="--i:70;"></span>
+        <img src="img/Misa/Misa70.jpg" alt="">
+        <span style="--i:71;"></span>
+        <img src="img/Misa/Misa71.jpg" alt="">
+        <span style="--i:72;"></span>
+        <img src="img/Misa/Misa72.jpg" alt="">
+        <span style="--i:73;"></span>
+        <img src="img/Misa/Misa73.jpg" alt="">
+        <span style="--i:74;"></span>
+        <img src="img/Misa/Misa74.jpg" alt="">
+        <span style="--i:75;"></span>
+        <img src="img/Misa/Misa75.jpg" alt="">
+        <span style="--i:76;"></span>
+        <img src="img/Misa/Misa76.jpg" alt="">
+        <span style="--i:77;"></span>
+        <img src="img/Misa/Misa77.jpg" alt="">
+        <span style="--i:78;"></span>
+        <img src="img/Misa/Misa78.jpg" alt="">
+        <span style="--i:79;"></span>
+        <img src="img/Misa/Misa79.jpg" alt="">
+        <span style="--i:80;"></span>
+        <img src="img/Misa/Misa80.jpg" alt="">
+        <span style="--i:81;"></span>
+        <img src="img/Misa/Misa81.jpg" alt="">
+        <span style="--i:82;"></span>
+        <img src="img/Misa/Misa82.jpg" alt="">
+        <span style="--i:83;"></span>
+        <img src="img/Misa/Misa83.jpg" alt="">
+        <span style="--i:84;"></span>
+        <img src="img/Misa/Misa84.jpg" alt="">
+        <span style="--i:85;"></span>
+        <img src="img/Misa/Misa85.jpg" alt="">
+        <span style="--i:86;"></span>
+        <img src="img/Misa/Misa86.jpg" alt="">
+        <span style="--i:87;"></span>
+        <img src="img/Misa/Misa87.jpg" alt="">
+        <span style="--i:88;"></span>
+        <img src="img/Misa/Misa88.jpg" alt="">
+        <span style="--i:89;"></span>
+        <img src="img/Misa/Misa89.jpg" alt="">
+        <span style="--i:90;"></span>
+        <img src="img/Misa/Misa90.jpg" alt="">
+        <span style="--i:91;"></span>
+        <img src="img/Misa/Misa91.jpg" alt="">
+        <span style="--i:92;"></span>
+        <img src="img/Misa/Misa92.jpg" alt="">
+        <span style="--i:93;"></span>
+        <img src="img/Misa/Misa93.jpg" alt="">
+        <span style="--i:94;"></span>
+        <img src="img/Misa/Misa94.jpg" alt="">
+        <span style="--i:95;"></span>
+        <img src="img/Misa/Misa95.jpg" alt="">
+        <span style="--i:96;"></span>
+        <img src="img/Misa/Misa96.jpg" alt="">
+        <span style="--i:97;"></span>
+        <img src="img/Misa/Misa97.jpg" alt="">
+        <span style="--i:98;"></span>
+        <img src="img/Misa/Misa98.jpg" alt="">
+        <span style="--i:99;"></span>
+        <img src="img/Misa/Misa99.jpg" alt="">
+        <span style="--i:100;"></span>
+        <img src="img/Misa/Misa100.jpg" alt="">
+        <span style="--i:101;"></span>
+        <img src="img/Misa/Misa101.jpg" alt="">
+        <span style="--i:102;"></span>
+        <img src="img/Misa/Misa102.jpg" alt="">
+        <span style="--i:103;"></span>
+        <img src="img/Misa/Misa103.jpg" alt="">
+        <span style="--i:104;"></span>
+        <img src="img/Misa/Misa104.jpg" alt="">
+        <span style="--i:105;"></span>
+        <img src="img/Misa/Misa105.jpg" alt="">
+        <span style="--i:106;"></span>
+        <img src="img/Misa/Misa106.jpg" alt="">
+        <span style="--i:107;"></span>
+        <img src="img/Misa/Misa107.jpg" alt="">
+        <span style="--i:108;"></span>
+        <img src="img/Misa/Misa108.jpg" alt="">
+        <span style="--i:109;"></span>
+        <img src="img/Misa/Misa109.jpg" alt="">
+        <span style="--i:110;"></span>
+        <img src="img/Misa/Misa110.jpg" alt="">
+        <span style="--i:111;"></span>
+        <img src="img/Misa/Misa111.jpg" alt="">
+        <span style="--i:112;"></span>
+        <img src="img/Misa/Misa112.jpg" alt="">
+        <span style="--i:113;"></span>
+        <img src="img/Misa/Misa113.jpg" alt="">
+        <span style="--i:114;"></span>
+        <img src="img/Misa/Misa114.jpg" alt="">
+        <span style="--i:115;"></span>
+        <img src="img/Misa/Misa115.jpg" alt="">
+        <span style="--i:116;"></span>
+        <img src="img/Misa/Misa116.jpg" alt="">
+        <span style="--i:117;"></span>
+        <img src="img/Misa/Misa117.jpg" alt="">
+        <span style="--i:118;"></span>
+        <img src="img/Misa/Misa118.jpg" alt="">
+        <span style="--i:119;"></span>
+        <img src="img/Misa/Misa119.jpg" alt="">
+    </div>
+	<!-- Filtro SVG para ruido estático -->
+    <svg id="noiseFilter">
+        <defs>
+            <filter id="noiseFilter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+                <feColorMatrix type="saturate" values="0"/>
+                <feComponentTransfer>
+                    <feFuncR type="linear" slope="0.5" intercept="0.25"/>
+                    <feFuncG type="linear" slope="0.5" intercept="0.25"/>
+                    <feFuncB type="linear" slope="0.5" intercept="0.25"/>
+                </feComponentTransfer>
+            </filter>
+        </defs>
+    </svg>
+</body>
+</html>

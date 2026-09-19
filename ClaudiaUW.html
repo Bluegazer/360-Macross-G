@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Claudia UW</title>
+    <link rel="icon" type="img/x-icon" href="img/favicon.ico">
+    <link rel="icon" type="img/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/ClaudiaUW.css">
+    <nav>
+        <ul>
+            <li><a href="indexMenuNSFW.html">BACK</a></li>
+        </ul>
+    </nav>
+    <script>
+      function inhabilitar(){
+          alert ("NO")
+          return false
+      }
+      
+      document.oncontextmenu = inhabilitar
+    // JavaScript to update overlay text and keep an image visible
+      document.addEventListener('DOMContentLoaded', () => {
+          const card = document.querySelector('.card');
+          const text = document.querySelector('.overlay-text');
+          const images = document.querySelectorAll('.card img');
+          let currentImageIndex = 0; // Track the currently visible image
+
+          // Set the first image as visible by default
+          images[0].style.opacity = 1;
+
+          card.addEventListener('mousemove', (e) => {
+              const rect = card.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const index = Math.floor((x / rect.width) * 120);
+              images.forEach((img, i) => {
+                  img.style.opacity = i === index ? 1 : 0;
+              });
+              currentImageIndex = index; // Update the current image index
+              text.textContent = ``;
+          });
+
+         // Ensure an image stays visible when mouse leaves
+          card.addEventListener('mouseleave', () => {
+              images.forEach((img, i) => {
+                  img.style.opacity = i === currentImageIndex ? 1 : 0;
+              });
+          });
+      });
+      
+document.addEventListener('DOMContentLoaded', () => {
+        const card = document.querySelector('.card');
+        const images = document.querySelectorAll('.card img');
+        const playBtn = document.querySelector('#playBtn');
+        const stopBtn = document.querySelector('#stopBtn');
+        let currentImageIndex = 0;
+        let autoPlayInterval = null;
+
+        if (images.length !== 120) {
+            console.error('Expected 120 images, found:', images.length);
+        }
+
+        images[0].style.opacity = 1;
+        stopBtn.disabled = true; // Deshabilitar el botón "Stop" al inicio
+
+        // Función para cambiar imágenes
+        const updateImage = (index) => {
+            images.forEach((img, i) => {
+                img.style.opacity = i === index ? 1 : 0;
+            });
+            currentImageIndex = index;
+        };
+
+        // Lógica de animación automática
+        const startAutoPlay = () => {
+            if (!autoPlayInterval) {
+                autoPlayInterval = setInterval(() => {
+                    currentImageIndex = (currentImageIndex + 1) % images.length; // Ciclo circular
+                    updateImage(currentImageIndex);
+                }, 50); // Cambia cada 50ms
+                playBtn.disabled = true;
+                stopBtn.disabled = false;
+            }
+        };
+
+        const stopAutoPlay = () => {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+                playBtn.disabled = false;
+                stopBtn.disabled = true;
+            }
+        };
+
+        // Evento para el botón Play
+        playBtn.addEventListener('click', startAutoPlay);
+
+        // Evento para el botón Stop
+        stopBtn.addEventListener('click', stopAutoPlay);
+
+        // Detener animación al interactuar con el mouse
+        let timeout;
+        card.addEventListener('mousemove', (e) => {
+            stopAutoPlay(); // Detener animación automática
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+                updateImage(index);
+            }, 10);
+        });
+
+        card.addEventListener('mouseleave', () => {
+            updateImage(currentImageIndex);
+        });
+
+        // Soporte para teclado
+        card.addEventListener('keydown', (e) => {
+            stopAutoPlay(); // Detener animación automática
+            if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+                currentImageIndex--;
+            } else if (e.key === 'ArrowRight' && currentImageIndex < images.length - 1) {
+                currentImageIndex++;
+            }
+            updateImage(currentImageIndex);
+        });
+
+        // Soporte para touch (opcional, para dispositivos móviles)
+        card.addEventListener('touchmove', (e) => {
+            stopAutoPlay(); // Detener animación automática
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = card.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+            updateImage(index);
+        });
+    });
+    </script>
+</head>
+<body>
+    <div id="arrow">
+        <h1>&#9668;Claudia LaSalle&#9658;</h1>
+        <div class="button-container">
+            <button id="playBtn">&#9658; PLAY</button>
+            <button id="stopBtn">&#9632; STOP</button>
+        </div>
+    </div>
+    <div class="card">
+        <span style="--i:0;"></span>
+        <img src="img/Claudia/ClaudiaUW0.jpg" alt="">
+        <span style="--i:1;"></span>
+        <img src="img/Claudia/ClaudiaUW1.jpg" alt="">
+        <span style="--i:2;"></span>
+        <img src="img/Claudia/ClaudiaUW2.jpg" alt="">
+        <span style="--i:3;"></span>
+        <img src="img/Claudia/ClaudiaUW3.jpg" alt="">
+        <span style="--i:4;"></span>
+        <img src="img/Claudia/ClaudiaUW4.jpg" alt="">
+        <span style="--i:5;"></span>
+        <img src="img/Claudia/ClaudiaUW5.jpg" alt="">
+        <span style="--i:6;"></span>
+        <img src="img/Claudia/ClaudiaUW6.jpg" alt="">
+        <span style="--i:7;"></span>
+        <img src="img/Claudia/ClaudiaUW7.jpg" alt="">
+        <span style="--i:8;"></span>
+        <img src="img/Claudia/ClaudiaUW8.jpg" alt="">
+        <span style="--i:9;"></span>
+        <img src="img/Claudia/ClaudiaUW9.jpg" alt="">
+        <span style="--i:10;"></span>
+        <img src="img/Claudia/ClaudiaUW10.jpg" alt="">
+        <span style="--i:11;"></span>
+        <img src="img/Claudia/ClaudiaUW11.jpg" alt="">
+        <span style="--i:12;"></span>
+        <img src="img/Claudia/ClaudiaUW12.jpg" alt="">
+        <span style="--i:13;"></span>
+        <img src="img/Claudia/ClaudiaUW13.jpg" alt="">
+        <span style="--i:14;"></span>
+        <img src="img/Claudia/ClaudiaUW14.jpg" alt="">
+        <span style="--i:15;"></span>
+        <img src="img/Claudia/ClaudiaUW15.jpg" alt="">
+        <span style="--i:16;"></span>
+        <img src="img/Claudia/ClaudiaUW16.jpg" alt="">
+        <span style="--i:17;"></span>
+        <img src="img/Claudia/ClaudiaUW17.jpg" alt="">
+        <span style="--i:18;"></span>
+        <img src="img/Claudia/ClaudiaUW18.jpg" alt="">
+        <span style="--i:19;"></span>
+        <img src="img/Claudia/ClaudiaUW19.jpg" alt="">
+        <span style="--i:20;"></span>
+        <img src="img/Claudia/ClaudiaUW20.jpg" alt="">
+        <span style="--i:21;"></span>
+        <img src="img/Claudia/ClaudiaUW21.jpg" alt="">
+        <span style="--i:22;"></span>
+        <img src="img/Claudia/ClaudiaUW22.jpg" alt="">
+        <span style="--i:23;"></span>
+        <img src="img/Claudia/ClaudiaUW23.jpg" alt="">
+        <span style="--i:24;"></span>
+        <img src="img/Claudia/ClaudiaUW24.jpg" alt="">
+        <span style="--i:25;"></span>
+        <img src="img/Claudia/ClaudiaUW25.jpg" alt="">
+        <span style="--i:26;"></span>
+        <img src="img/Claudia/ClaudiaUW26.jpg" alt="">
+        <span style="--i:27;"></span>
+        <img src="img/Claudia/ClaudiaUW27.jpg" alt="">
+        <span style="--i:28;"></span>
+        <img src="img/Claudia/ClaudiaUW28.jpg" alt="">
+        <span style="--i:29;"></span>
+        <img src="img/Claudia/ClaudiaUW29.jpg" alt="">
+        <span style="--i:30;"></span>
+        <img src="img/Claudia/ClaudiaUW30.jpg" alt="">
+        <span style="--i:31;"></span>
+        <img src="img/Claudia/ClaudiaUW31.jpg" alt="">
+        <span style="--i:32;"></span>
+        <img src="img/Claudia/ClaudiaUW32.jpg" alt="">
+        <span style="--i:33;"></span>
+        <img src="img/Claudia/ClaudiaUW33.jpg" alt="">
+        <span style="--i:34;"></span>
+        <img src="img/Claudia/ClaudiaUW34.jpg" alt="">
+        <span style="--i:35;"></span>
+        <img src="img/Claudia/ClaudiaUW35.jpg" alt="">
+        <span style="--i:36;"></span>
+        <img src="img/Claudia/ClaudiaUW36.jpg" alt="">
+        <span style="--i:37;"></span>
+        <img src="img/Claudia/ClaudiaUW37.jpg" alt="">
+        <span style="--i:38;"></span>
+        <img src="img/Claudia/ClaudiaUW38.jpg" alt="">
+        <span style="--i:39;"></span>
+        <img src="img/Claudia/ClaudiaUW39.jpg" alt="">
+        <span style="--i:40;"></span>
+        <img src="img/Claudia/ClaudiaUW40.jpg" alt="">
+        <span style="--i:41;"></span>
+        <img src="img/Claudia/ClaudiaUW41.jpg" alt="">
+        <span style="--i:42;"></span>
+        <img src="img/Claudia/ClaudiaUW42.jpg" alt="">
+        <span style="--i:43;"></span>
+        <img src="img/Claudia/ClaudiaUW43.jpg" alt="">
+        <span style="--i:44;"></span>
+        <img src="img/Claudia/ClaudiaUW44.jpg" alt="">
+        <span style="--i:45;"></span>
+        <img src="img/Claudia/ClaudiaUW45.jpg" alt="">
+        <span style="--i:46;"></span>
+        <img src="img/Claudia/ClaudiaUW46.jpg" alt="">
+        <span style="--i:47;"></span>
+        <img src="img/Claudia/ClaudiaUW47.jpg" alt="">
+        <span style="--i:48;"></span>
+        <img src="img/Claudia/ClaudiaUW48.jpg" alt="">
+        <span style="--i:49;"></span>
+        <img src="img/Claudia/ClaudiaUW49.jpg" alt="">
+        <span style="--i:50;"></span>
+        <img src="img/Claudia/ClaudiaUW50.jpg" alt="">
+        <span style="--i:51;"></span>
+        <img src="img/Claudia/ClaudiaUW51.jpg" alt="">
+        <span style="--i:52;"></span>
+        <img src="img/Claudia/ClaudiaUW52.jpg" alt="">
+        <span style="--i:53;"></span>
+        <img src="img/Claudia/ClaudiaUW53.jpg" alt="">
+        <span style="--i:54;"></span>
+        <img src="img/Claudia/ClaudiaUW54.jpg" alt="">
+        <span style="--i:55;"></span>
+        <img src="img/Claudia/ClaudiaUW55.jpg" alt="">
+        <span style="--i:56;"></span>
+        <img src="img/Claudia/ClaudiaUW56.jpg" alt="">
+        <span style="--i:57;"></span>
+        <img src="img/Claudia/ClaudiaUW57.jpg" alt="">
+        <span style="--i:58;"></span>
+        <img src="img/Claudia/ClaudiaUW58.jpg" alt="">
+        <span style="--i:59;"></span>
+        <img src="img/Claudia/ClaudiaUW59.jpg" alt="">
+        <span style="--i:60;"></span>
+        <img src="img/Claudia/ClaudiaUW60.jpg" alt="">
+        <span style="--i:61;"></span>
+        <img src="img/Claudia/ClaudiaUW61.jpg" alt="">
+        <span style="--i:62;"></span>
+        <img src="img/Claudia/ClaudiaUW62.jpg" alt="">
+        <span style="--i:63;"></span>
+        <img src="img/Claudia/ClaudiaUW63.jpg" alt="">
+        <span style="--i:64;"></span>
+        <img src="img/Claudia/ClaudiaUW64.jpg" alt="">
+        <span style="--i:65;"></span>
+        <img src="img/Claudia/ClaudiaUW65.jpg" alt="">
+        <span style="--i:66;"></span>
+        <img src="img/Claudia/ClaudiaUW66.jpg" alt="">
+        <span style="--i:67;"></span>
+        <img src="img/Claudia/ClaudiaUW67.jpg" alt="">
+        <span style="--i:68;"></span>
+        <img src="img/Claudia/ClaudiaUW68.jpg" alt="">
+        <span style="--i:69;"></span>
+        <img src="img/Claudia/ClaudiaUW69.jpg" alt="">
+        <span style="--i:70;"></span>
+        <img src="img/Claudia/ClaudiaUW70.jpg" alt="">
+        <span style="--i:71;"></span>
+        <img src="img/Claudia/ClaudiaUW71.jpg" alt="">
+        <span style="--i:72;"></span>
+        <img src="img/Claudia/ClaudiaUW72.jpg" alt="">
+        <span style="--i:73;"></span>
+        <img src="img/Claudia/ClaudiaUW73.jpg" alt="">
+        <span style="--i:74;"></span>
+        <img src="img/Claudia/ClaudiaUW74.jpg" alt="">
+        <span style="--i:75;"></span>
+        <img src="img/Claudia/ClaudiaUW75.jpg" alt="">
+        <span style="--i:76;"></span>
+        <img src="img/Claudia/ClaudiaUW76.jpg" alt="">
+        <span style="--i:77;"></span>
+        <img src="img/Claudia/ClaudiaUW77.jpg" alt="">
+        <span style="--i:78;"></span>
+        <img src="img/Claudia/ClaudiaUW78.jpg" alt="">
+        <span style="--i:79;"></span>
+        <img src="img/Claudia/ClaudiaUW79.jpg" alt="">
+        <span style="--i:80;"></span>
+        <img src="img/Claudia/ClaudiaUW80.jpg" alt="">
+        <span style="--i:81;"></span>
+        <img src="img/Claudia/ClaudiaUW81.jpg" alt="">
+        <span style="--i:82;"></span>
+        <img src="img/Claudia/ClaudiaUW82.jpg" alt="">
+        <span style="--i:83;"></span>
+        <img src="img/Claudia/ClaudiaUW83.jpg" alt="">
+        <span style="--i:84;"></span>
+        <img src="img/Claudia/ClaudiaUW84.jpg" alt="">
+        <span style="--i:85;"></span>
+        <img src="img/Claudia/ClaudiaUW85.jpg" alt="">
+        <span style="--i:86;"></span>
+        <img src="img/Claudia/ClaudiaUW86.jpg" alt="">
+        <span style="--i:87;"></span>
+        <img src="img/Claudia/ClaudiaUW87.jpg" alt="">
+        <span style="--i:88;"></span>
+        <img src="img/Claudia/ClaudiaUW88.jpg" alt="">
+        <span style="--i:89;"></span>
+        <img src="img/Claudia/ClaudiaUW89.jpg" alt="">
+        <span style="--i:90;"></span>
+        <img src="img/Claudia/ClaudiaUW90.jpg" alt="">
+        <span style="--i:91;"></span>
+        <img src="img/Claudia/ClaudiaUW91.jpg" alt="">
+        <span style="--i:92;"></span>
+        <img src="img/Claudia/ClaudiaUW92.jpg" alt="">
+        <span style="--i:93;"></span>
+        <img src="img/Claudia/ClaudiaUW93.jpg" alt="">
+        <span style="--i:94;"></span>
+        <img src="img/Claudia/ClaudiaUW94.jpg" alt="">
+        <span style="--i:95;"></span>
+        <img src="img/Claudia/ClaudiaUW95.jpg" alt="">
+        <span style="--i:96;"></span>
+        <img src="img/Claudia/ClaudiaUW96.jpg" alt="">
+        <span style="--i:97;"></span>
+        <img src="img/Claudia/ClaudiaUW97.jpg" alt="">
+        <span style="--i:98;"></span>
+        <img src="img/Claudia/ClaudiaUW98.jpg" alt="">
+        <span style="--i:99;"></span>
+        <img src="img/Claudia/ClaudiaUW99.jpg" alt="">
+        <span style="--i:100;"></span>
+        <img src="img/Claudia/ClaudiaUW100.jpg" alt="">
+        <span style="--i:101;"></span>
+        <img src="img/Claudia/ClaudiaUW101.jpg" alt="">
+        <span style="--i:102;"></span>
+        <img src="img/Claudia/ClaudiaUW102.jpg" alt="">
+        <span style="--i:103;"></span>
+        <img src="img/Claudia/ClaudiaUW103.jpg" alt="">
+        <span style="--i:104;"></span>
+        <img src="img/Claudia/ClaudiaUW104.jpg" alt="">
+        <span style="--i:105;"></span>
+        <img src="img/Claudia/ClaudiaUW105.jpg" alt="">
+        <span style="--i:106;"></span>
+        <img src="img/Claudia/ClaudiaUW106.jpg" alt="">
+        <span style="--i:107;"></span>
+        <img src="img/Claudia/ClaudiaUW107.jpg" alt="">
+        <span style="--i:108;"></span>
+        <img src="img/Claudia/ClaudiaUW108.jpg" alt="">
+        <span style="--i:109;"></span>
+        <img src="img/Claudia/ClaudiaUW109.jpg" alt="">
+        <span style="--i:110;"></span>
+        <img src="img/Claudia/ClaudiaUW110.jpg" alt="">
+        <span style="--i:111;"></span>
+        <img src="img/Claudia/ClaudiaUW111.jpg" alt="">
+        <span style="--i:112;"></span>
+        <img src="img/Claudia/ClaudiaUW112.jpg" alt="">
+        <span style="--i:113;"></span>
+        <img src="img/Claudia/ClaudiaUW113.jpg" alt="">
+        <span style="--i:114;"></span>
+        <img src="img/Claudia/ClaudiaUW114.jpg" alt="">
+        <span style="--i:115;"></span>
+        <img src="img/Claudia/ClaudiaUW115.jpg" alt="">
+        <span style="--i:116;"></span>
+        <img src="img/Claudia/ClaudiaUW116.jpg" alt="">
+        <span style="--i:117;"></span>
+        <img src="img/Claudia/ClaudiaUW117.jpg" alt="">
+        <span style="--i:118;"></span>
+        <img src="img/Claudia/ClaudiaUW118.jpg" alt="">
+        <span style="--i:119;"></span>
+        <img src="img/Claudia/ClaudiaUW119.jpg" alt="">
+    </div>
+</body>
+</html>

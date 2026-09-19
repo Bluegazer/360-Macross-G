@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Minmay</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/Minmay.css">
+    <script>
+      function inhabilitar(){
+          alert("NO");
+          return false;
+      }
+      
+      document.oncontextmenu = inhabilitar;
+      
+      document.addEventListener('DOMContentLoaded', () => {
+          const card = document.querySelector('.card');
+          const text = document.querySelector('.overlay-text');
+          const images = document.querySelectorAll('.card img');
+          const infoBtn = document.querySelector('#infoBtn');
+          let currentImageIndex = 0;
+          let isInfoVisible = false;
+
+          images[0].style.opacity = 1;
+          text.classList.remove('visible'); // Ensure initially hidden
+
+          card.addEventListener('mousemove', (e) => {
+              const rect = card.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const index = Math.floor((x / rect.width) * 120);
+              images.forEach((img, i) => {
+                  img.style.opacity = i === index ? 1 : 0;
+              });
+              currentImageIndex = index;
+              text.innerHTML = `
+                <p class="stat">Lynn Minmay</p>
+                <p class="narrative">In the beginning, she was simply a Chinese restaurant waitress in high school with dreams of being a singer.
+				Since Space War I, her exploits and her role in the Battle with the Boddole Zer Main Fleet have become the stuff of legends and countless retellings. 
+				She performed a Sayonara Concert Tour before embarking upon the Megaroad-01 on a colonization voyage in 2012. 
+				She was last heard just before disappearing with the Megaroad-01 in 2016. </p>
+                <p class="stat">Name: Lynn Minmay</p>
+                <p class="stat">Birthdate: October 10, 1993</p>
+                <p class="stat">Birthplace: Yokohama, Japan</p>
+                <p class="stat">Ethnicity: Japanese-Chinese</p>
+                <p class="stat">Age: 15 (17 in film)</p>
+                <p class="stat">Blood Type: O</p>
+                <p class="stat">Height: 158 cm</p>
+                <p class="stat">Measurements: 80-58-87 cm</p>
+                <p class="stat">Gender: Female</p>
+                <p class="stat">Weight: 47 kg</p>
+                <p class="stat">Occupation: Restaurant waitress. Idol singer. Movie star. The 1st Miss Macross.</p>`;
+          });
+
+          infoBtn.addEventListener('click', () => {
+              isInfoVisible = !isInfoVisible;
+              text.classList.toggle('visible', isInfoVisible); // Toggle visibility class
+              infoBtn.textContent = isInfoVisible ? 'HIDE INFO' : 'INFO';
+          });
+
+          card.addEventListener('mouseleave', () => {
+              images.forEach((img, i) => {
+                  img.style.opacity = i === currentImageIndex ? 1 : 0;
+              });
+          });
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+          const card = document.querySelector('.card');
+          const images = document.querySelectorAll('.card img');
+          const playBtn = document.querySelector('#playBtn');
+          const stopBtn = document.querySelector('#stopBtn');
+          let currentImageIndex = 0;
+          let autoPlayInterval = null;
+
+          if (images.length !== 120) {
+              console.error('Expected 120 images, found:', images.length);
+          }
+
+          images[0].style.opacity = 1;
+          stopBtn.disabled = true;
+
+          const updateImage = (index) => {
+              images.forEach((img, i) => {
+                  img.style.opacity = i === index ? 1 : 0;
+              });
+              currentImageIndex = index;
+          };
+
+          const startAutoPlay = () => {
+              if (!autoPlayInterval) {
+                  autoPlayInterval = setInterval(() => {
+                      currentImageIndex = (currentImageIndex + 1) % images.length;
+                      updateImage(currentImageIndex);
+                  }, 50);
+                  playBtn.disabled = true;
+                  stopBtn.disabled = false;
+              }
+          };
+
+          const stopAutoPlay = () => {
+              if (autoPlayInterval) {
+                  clearInterval(autoPlayInterval);
+                  autoPlayInterval = null;
+                  playBtn.disabled = false;
+                  stopBtn.disabled = true;
+              }
+          };
+
+          playBtn.addEventListener('click', startAutoPlay);
+          stopBtn.addEventListener('click', stopAutoPlay);
+
+          let timeout;
+          card.addEventListener('mousemove', (e) => {
+              stopAutoPlay();
+              clearTimeout(timeout);
+              timeout = setTimeout(() => {
+                  const rect = card.getBoundingClientRect();
+                  const x = e.clientX - rect.left;
+                  const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+                  updateImage(index);
+              }, 10);
+          });
+
+          card.addEventListener('mouseleave', () => {
+              updateImage(currentImageIndex);
+          });
+
+          card.addEventListener('keydown', (e) => {
+              stopAutoPlay();
+              if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+                  currentImageIndex--;
+              } else if (e.key === 'ArrowRight' && currentImageIndex < images.length - 1) {
+                  currentImageIndex++;
+              }
+              updateImage(currentImageIndex);
+          });
+
+          card.addEventListener('touchmove', (e) => {
+              stopAutoPlay();
+              e.preventDefault();
+              const touch = e.touches[0];
+              const rect = card.getBoundingClientRect();
+              const x = touch.clientX - rect.left;
+              const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+              updateImage(index);
+          });
+      });
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="indexMenu.html">BACK</a></li>
+        </ul>
+    </nav>
+    <div id="arrow">
+        <h1>&#9668;Lynn Minmay&#9658;</h1>
+        <div class="button-container">
+            <button id="playBtn">&#9658; PLAY</button>
+            <button id="stopBtn">&#9632; STOP</button>
+            <button id="infoBtn">INFO</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="overlay-text">
+            <p class="stat">Lynn Minmay</p>
+                <p class="narrative">In the beginning, she was simply a Chinese restaurant waitress in high school with dreams of being a singer.
+				Since Space War I, her exploits and her role in the Battle with the Boddole Zer Main Fleet have become the stuff of legends and countless retellings. 
+				She performed a Sayonara Concert Tour before embarking upon the Megaroad-01 on a colonization voyage in 2012. 
+				She was last heard just before disappearing with the Megaroad-01 in 2016. </p>
+                <p class="stat">Name: Lynn Minmay</p>
+                <p class="stat">Birthdate: October 10, 1993</p>
+                <p class="stat">Birthplace: Yokohama, Japan</p>
+                <p class="stat">Ethnicity: Japanese-Chinese</p>
+                <p class="stat">Age: 15 (17 in film)</p>
+                <p class="stat">Blood Type: O</p>
+                <p class="stat">Height: 158 cm</p>
+                <p class="stat">Measurements: 80-58-87 cm</p>
+                <p class="stat">Gender: Female</p>
+                <p class="stat">Weight: 47 kg</p>
+                <p class="stat">Occupation: Restaurant waitress. Idol singer. Movie star. The 1st Miss Macross.</p>
+        </div>
+        <span style="--i:0;"></span>
+        <img src="img/Minmay/Minmay0.jpg" alt="">
+        <span style="--i:1;"></span>
+        <img src="img/Minmay/Minmay1.jpg" alt="">
+        <span style="--i:2;"></span>
+        <img src="img/Minmay/Minmay2.jpg" alt="">
+        <span style="--i:3;"></span>
+        <img src="img/Minmay/Minmay3.jpg" alt="">
+        <span style="--i:4;"></span>
+        <img src="img/Minmay/Minmay4.jpg" alt="">
+        <span style="--i:5;"></span>
+        <img src="img/Minmay/Minmay5.jpg" alt="">
+        <span style="--i:6;"></span>
+        <img src="img/Minmay/Minmay6.jpg" alt="">
+        <span style="--i:7;"></span>
+        <img src="img/Minmay/Minmay7.jpg" alt="">
+        <span style="--i:8;"></span>
+        <img src="img/Minmay/Minmay8.jpg" alt="">
+        <span style="--i:9;"></span>
+        <img src="img/Minmay/Minmay9.jpg" alt="">
+        <span style="--i:10;"></span>
+        <img src="img/Minmay/Minmay10.jpg" alt="">
+        <span style="--i:11;"></span>
+        <img src="img/Minmay/Minmay11.jpg" alt="">
+        <span style="--i:12;"></span>
+        <img src="img/Minmay/Minmay12.jpg" alt="">
+        <span style="--i:13;"></span>
+        <img src="img/Minmay/Minmay13.jpg" alt="">
+        <span style="--i:14;"></span>
+        <img src="img/Minmay/Minmay14.jpg" alt="">
+        <span style="--i:15;"></span>
+        <img src="img/Minmay/Minmay15.jpg" alt="">
+        <span style="--i:16;"></span>
+        <img src="img/Minmay/Minmay16.jpg" alt="">
+        <span style="--i:17;"></span>
+        <img src="img/Minmay/Minmay17.jpg" alt="">
+        <span style="--i:18;"></span>
+        <img src="img/Minmay/Minmay18.jpg" alt="">
+        <span style="--i:19;"></span>
+        <img src="img/Minmay/Minmay19.jpg" alt="">
+        <span style="--i:20;"></span>
+        <img src="img/Minmay/Minmay20.jpg" alt="">
+        <span style="--i:21;"></span>
+        <img src="img/Minmay/Minmay21.jpg" alt="">
+        <span style="--i:22;"></span>
+        <img src="img/Minmay/Minmay22.jpg" alt="">
+        <span style="--i:23;"></span>
+        <img src="img/Minmay/Minmay23.jpg" alt="">
+        <span style="--i:24;"></span>
+        <img src="img/Minmay/Minmay24.jpg" alt="">
+        <span style="--i:25;"></span>
+        <img src="img/Minmay/Minmay25.jpg" alt="">
+        <span style="--i:26;"></span>
+        <img src="img/Minmay/Minmay26.jpg" alt="">
+        <span style="--i:27;"></span>
+        <img src="img/Minmay/Minmay27.jpg" alt="">
+        <span style="--i:28;"></span>
+        <img src="img/Minmay/Minmay28.jpg" alt="">
+        <span style="--i:29;"></span>
+        <img src="img/Minmay/Minmay29.jpg" alt="">
+        <span style="--i:30;"></span>
+        <img src="img/Minmay/Minmay30.jpg" alt="">
+        <span style="--i:31;"></span>
+        <img src="img/Minmay/Minmay31.jpg" alt="">
+        <span style="--i:32;"></span>
+        <img src="img/Minmay/Minmay32.jpg" alt="">
+        <span style="--i:33;"></span>
+        <img src="img/Minmay/Minmay33.jpg" alt="">
+        <span style="--i:34;"></span>
+        <img src="img/Minmay/Minmay34.jpg" alt="">
+        <span style="--i:35;"></span>
+        <img src="img/Minmay/Minmay35.jpg" alt="">
+        <span style="--i:36;"></span>
+        <img src="img/Minmay/Minmay36.jpg" alt="">
+        <span style="--i:37;"></span>
+        <img src="img/Minmay/Minmay37.jpg" alt="">
+        <span style="--i:38;"></span>
+        <img src="img/Minmay/Minmay38.jpg" alt="">
+        <span style="--i:39;"></span>
+        <img src="img/Minmay/Minmay39.jpg" alt="">
+        <span style="--i:40;"></span>
+        <img src="img/Minmay/Minmay40.jpg" alt="">
+        <span style="--i:41;"></span>
+        <img src="img/Minmay/Minmay41.jpg" alt="">
+        <span style="--i:42;"></span>
+        <img src="img/Minmay/Minmay42.jpg" alt="">
+        <span style="--i:43;"></span>
+        <img src="img/Minmay/Minmay43.jpg" alt="">
+        <span style="--i:44;"></span>
+        <img src="img/Minmay/Minmay44.jpg" alt="">
+        <span style="--i:45;"></span>
+        <img src="img/Minmay/Minmay45.jpg" alt="">
+        <span style="--i:46;"></span>
+        <img src="img/Minmay/Minmay46.jpg" alt="">
+        <span style="--i:47;"></span>
+        <img src="img/Minmay/Minmay47.jpg" alt="">
+        <span style="--i:48;"></span>
+        <img src="img/Minmay/Minmay48.jpg" alt="">
+        <span style="--i:49;"></span>
+        <img src="img/Minmay/Minmay49.jpg" alt="">
+        <span style="--i:50;"></span>
+        <img src="img/Minmay/Minmay50.jpg" alt="">
+        <span style="--i:51;"></span>
+        <img src="img/Minmay/Minmay51.jpg" alt="">
+        <span style="--i:52;"></span>
+        <img src="img/Minmay/Minmay52.jpg" alt="">
+        <span style="--i:53;"></span>
+        <img src="img/Minmay/Minmay53.jpg" alt="">
+        <span style="--i:54;"></span>
+        <img src="img/Minmay/Minmay54.jpg" alt="">
+        <span style="--i:55;"></span>
+        <img src="img/Minmay/Minmay55.jpg" alt="">
+        <span style="--i:56;"></span>
+        <img src="img/Minmay/Minmay56.jpg" alt="">
+        <span style="--i:57;"></span>
+        <img src="img/Minmay/Minmay57.jpg" alt="">
+        <span style="--i:58;"></span>
+        <img src="img/Minmay/Minmay58.jpg" alt="">
+        <span style="--i:59;"></span>
+        <img src="img/Minmay/Minmay59.jpg" alt="">
+        <span style="--i:60;"></span>
+        <img src="img/Minmay/Minmay60.jpg" alt="">
+        <span style="--i:61;"></span>
+        <img src="img/Minmay/Minmay61.jpg" alt="">
+        <span style="--i:62;"></span>
+        <img src="img/Minmay/Minmay62.jpg" alt="">
+        <span style="--i:63;"></span>
+        <img src="img/Minmay/Minmay63.jpg" alt="">
+        <span style="--i:64;"></span>
+        <img src="img/Minmay/Minmay64.jpg" alt="">
+        <span style="--i:65;"></span>
+        <img src="img/Minmay/Minmay65.jpg" alt="">
+        <span style="--i:66;"></span>
+        <img src="img/Minmay/Minmay66.jpg" alt="">
+        <span style="--i:67;"></span>
+        <img src="img/Minmay/Minmay67.jpg" alt="">
+        <span style="--i:68;"></span>
+        <img src="img/Minmay/Minmay68.jpg" alt="">
+        <span style="--i:69;"></span>
+        <img src="img/Minmay/Minmay69.jpg" alt="">
+        <span style="--i:70;"></span>
+        <img src="img/Minmay/Minmay70.jpg" alt="">
+        <span style="--i:71;"></span>
+        <img src="img/Minmay/Minmay71.jpg" alt="">
+        <span style="--i:72;"></span>
+        <img src="img/Minmay/Minmay72.jpg" alt="">
+        <span style="--i:73;"></span>
+        <img src="img/Minmay/Minmay73.jpg" alt="">
+        <span style="--i:74;"></span>
+        <img src="img/Minmay/Minmay74.jpg" alt="">
+        <span style="--i:75;"></span>
+        <img src="img/Minmay/Minmay75.jpg" alt="">
+        <span style="--i:76;"></span>
+        <img src="img/Minmay/Minmay76.jpg" alt="">
+        <span style="--i:77;"></span>
+        <img src="img/Minmay/Minmay77.jpg" alt="">
+        <span style="--i:78;"></span>
+        <img src="img/Minmay/Minmay78.jpg" alt="">
+        <span style="--i:79;"></span>
+        <img src="img/Minmay/Minmay79.jpg" alt="">
+        <span style="--i:80;"></span>
+        <img src="img/Minmay/Minmay80.jpg" alt="">
+        <span style="--i:81;"></span>
+        <img src="img/Minmay/Minmay81.jpg" alt="">
+        <span style="--i:82;"></span>
+        <img src="img/Minmay/Minmay82.jpg" alt="">
+        <span style="--i:83;"></span>
+        <img src="img/Minmay/Minmay83.jpg" alt="">
+        <span style="--i:84;"></span>
+        <img src="img/Minmay/Minmay84.jpg" alt="">
+        <span style="--i:85;"></span>
+        <img src="img/Minmay/Minmay85.jpg" alt="">
+        <span style="--i:86;"></span>
+        <img src="img/Minmay/Minmay86.jpg" alt="">
+        <span style="--i:87;"></span>
+        <img src="img/Minmay/Minmay87.jpg" alt="">
+        <span style="--i:88;"></span>
+        <img src="img/Minmay/Minmay88.jpg" alt="">
+        <span style="--i:89;"></span>
+        <img src="img/Minmay/Minmay89.jpg" alt="">
+        <span style="--i:90;"></span>
+        <img src="img/Minmay/Minmay90.jpg" alt="">
+        <span style="--i:91;"></span>
+        <img src="img/Minmay/Minmay91.jpg" alt="">
+        <span style="--i:92;"></span>
+        <img src="img/Minmay/Minmay92.jpg" alt="">
+        <span style="--i:93;"></span>
+        <img src="img/Minmay/Minmay93.jpg" alt="">
+        <span style="--i:94;"></span>
+        <img src="img/Minmay/Minmay94.jpg" alt="">
+        <span style="--i:95;"></span>
+        <img src="img/Minmay/Minmay95.jpg" alt="">
+        <span style="--i:96;"></span>
+        <img src="img/Minmay/Minmay96.jpg" alt="">
+        <span style="--i:97;"></span>
+        <img src="img/Minmay/Minmay97.jpg" alt="">
+        <span style="--i:98;"></span>
+        <img src="img/Minmay/Minmay98.jpg" alt="">
+        <span style="--i:99;"></span>
+        <img src="img/Minmay/Minmay99.jpg" alt="">
+        <span style="--i:100;"></span>
+        <img src="img/Minmay/Minmay100.jpg" alt="">
+        <span style="--i:101;"></span>
+        <img src="img/Minmay/Minmay101.jpg" alt="">
+        <span style="--i:102;"></span>
+        <img src="img/Minmay/Minmay102.jpg" alt="">
+        <span style="--i:103;"></span>
+        <img src="img/Minmay/Minmay103.jpg" alt="">
+        <span style="--i:104;"></span>
+        <img src="img/Minmay/Minmay104.jpg" alt="">
+        <span style="--i:105;"></span>
+        <img src="img/Minmay/Minmay105.jpg" alt="">
+        <span style="--i:106;"></span>
+        <img src="img/Minmay/Minmay106.jpg" alt="">
+        <span style="--i:107;"></span>
+        <img src="img/Minmay/Minmay107.jpg" alt="">
+        <span style="--i:108;"></span>
+        <img src="img/Minmay/Minmay108.jpg" alt="">
+        <span style="--i:109;"></span>
+        <img src="img/Minmay/Minmay109.jpg" alt="">
+        <span style="--i:110;"></span>
+        <img src="img/Minmay/Minmay110.jpg" alt="">
+        <span style="--i:111;"></span>
+        <img src="img/Minmay/Minmay111.jpg" alt="">
+        <span style="--i:112;"></span>
+        <img src="img/Minmay/Minmay112.jpg" alt="">
+        <span style="--i:113;"></span>
+        <img src="img/Minmay/Minmay113.jpg" alt="">
+        <span style="--i:114;"></span>
+        <img src="img/Minmay/Minmay114.jpg" alt="">
+        <span style="--i:115;"></span>
+        <img src="img/Minmay/Minmay115.jpg" alt="">
+        <span style="--i:116;"></span>
+        <img src="img/Minmay/Minmay116.jpg" alt="">
+        <span style="--i:117;"></span>
+        <img src="img/Minmay/Minmay117.jpg" alt="">
+        <span style="--i:118;"></span>
+        <img src="img/Minmay/Minmay118.jpg" alt="">
+        <span style="--i:119;"></span>
+        <img src="img/Minmay/Minmay119.jpg" alt="">
+    </div>
+	<!-- Filtro SVG para ruido estático -->
+    <svg id="noiseFilter">
+        <defs>
+            <filter id="noiseFilter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+                <feColorMatrix type="saturate" values="0"/>
+                <feComponentTransfer>
+                    <feFuncR type="linear" slope="0.5" intercept="0.25"/>
+                    <feFuncG type="linear" slope="0.5" intercept="0.25"/>
+                    <feFuncB type="linear" slope="0.5" intercept="0.25"/>
+                </feComponentTransfer>
+            </filter>
+        </defs>
+    </svg>
+</body>
+</html>

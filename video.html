@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videos - Macross Girls Gallery</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="css/video.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1 class="text-shadow">Videos - Macross Girls Gallery</h1>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="indexMenu.html" class="text-shadow">BACK</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="text" class="text-shadow">
+        Welcome to the Macross Girls Gallery video section! Explore our collection of original videos featuring your favorite characters.
+    </div>
+
+    <!-- Video Gallery -->
+    <div class="gallery-container">
+        <div class="gallery">
+            <div class="video-item" data-video="videos/Carnaval.mp4" data-poster="img/vidthumb/carnaval.jpg" data-audio="snd/CARNIVALSUNSET.ogg">
+                <img src="img/vidthumb/carnaval.jpg" alt="Carnival">
+                <span class="video-name">Carnival</span>
+            </div>
+            <div class="video-item" data-video="videos/Sunsetbeach.mp4" data-poster="img/vidthumb/sunsetbeach.jpg" data-audio="snd/SUNSETBEACHKARAOKE.ogg">
+                <img src="img/vidthumb/sunsetbeach.jpg" alt="Sunset Beach">
+                <span class="video-name">Sunset Beach</span>
+            </div>
+            <div class="video-item" data-video="videos/Minmayride.mp4" data-poster="img/vidthumb/minmayride.jpg" data-audio="snd/LASTRIDE8289.ogg">
+                <img src="img/vidthumb/minmayride.jpg" alt="Minmay Ride">
+                <span class="video-name">Ride</span>
+            </div>
+            <div class="video-item" data-video="videos/Scandal.mp4" data-poster="img/vidthumb/scandal.jpg" data-audio="snd/MOVIEBGM29.ogg">
+                <img src="img/vidthumb/scandal.jpg" alt="Scandal">
+                <span class="video-name">Scandal</span>
+            </div>
+            <div class="video-item" data-video="videos/YF19Advance.mp4" data-poster="img/vidthumb/yf19adv.jpg" data-audio="snd/TWoG.ogg">
+                <img src="img/vidthumb/yf19adv.jpg" alt="Fold">
+                <span class="video-name">Fold</span>
+            </div>
+            <div class="video-item" data-video="videos/Armd.mp4" data-poster="img/vidthumb/armd.jpg" data-audio="snd/FSAttack.ogg">
+                <img src="img/vidthumb/armd.jpg" alt="Armd">
+                <span class="video-name">Armd</span>
+            </div>
+            <div class="video-item" data-video="videos/Bridge.mp4" data-poster="img/vidthumb/bridge.jpg" data-audio="snd/BRIDGEAMBIANCE.ogg">
+                <img src="img/vidthumb/bridge.jpg" alt="Bridge">
+                <span class="video-name">Bridge</span>
+            </div>
+            <div class="video-item" data-video="videos/Cooking.mp4" data-poster="img/vidthumb/cooking.jpg" data-audio="snd/TVBGM18.ogg">
+                <img src="img/vidthumb/cooking.jpg" alt="Cooking">
+                <span class="video-name">Cooking</span>
+            </div>
+            <div class="video-item" data-video="videos/RuinedPlanet.mp4" data-poster="img/vidthumb/ruinedplanet.jpg" data-audio="snd/SILENT.ogg">
+                <img src="img/vidthumb/ruinedplanet.jpg" alt="Ruined Planet">
+                <span class="video-name">Ruined Planet</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal">
+        <span class="close text-shadow">&times;</span>
+        <div class="modal-content">
+            <video controls autoplay>
+                <source src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <audio id="backgroundAudio">
+                <source src="" type="audio/mp3">
+                Your browser does not support the audio tag.
+            </audio>
+        </div>
+    </div>
+
+    <!-- Creative Commons License -->
+    <div class="cc-license text-shadow">
+        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+            Content licensed under CC BY-NC-SA 4.0
+            <img src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" alt="CC BY-NC-SA">
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Video Modal
+            const videoItems = document.querySelectorAll('.video-item');
+            const videoModal = document.getElementById('videoModal');
+            const videoElement = videoModal.querySelector('video');
+            const audioElement = videoModal.querySelector('#backgroundAudio');
+            const closeModal = document.querySelector('.close');
+
+            videoItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    console.log('Video item clicked:', item.dataset.video, item.dataset.audio); // Depuración
+                    const videoSrc = item.dataset.video;
+                    const posterSrc = item.dataset.poster;
+                    const audioSrc = item.dataset.audio;
+
+                    // Configurar video
+                    videoElement.querySelector('source[type="video/mp4"]').src = videoSrc;
+                    videoElement.poster = posterSrc;
+                    videoElement.load();
+                    console.log('Video source set:', videoSrc); // Depuración
+
+                    // Configurar audio
+                    audioElement.querySelector('source[type="audio/mp3"]').src = audioSrc;
+                    audioElement.volume = 0; // Iniciar con volumen 0 para fade-in
+                    audioElement.load();
+                    console.log('Audio source set:', audioSrc); // Depuración
+
+                    videoModal.style.display = 'flex';
+                    videoElement.focus();
+
+                    // Intentar reproducir el video
+                    videoElement.play().catch(error => {
+                        console.error('Error al reproducir el video:', error);
+                        alert('No se pudo reproducir el video. Verifica la ruta del archivo o las restricciones del navegador.');
+                    });
+                });
+            });
+
+            // Manejo de errores de carga
+            videoElement.addEventListener('error', () => {
+                console.error('Error al cargar el video:', videoElement.querySelector('source').src);
+                alert('Error al cargar el video. Verifica que el archivo exista y sea compatible.');
+            });
+
+            audioElement.addEventListener('error', () => {
+                console.error('Error al cargar el audio:', audioElement.querySelector('source').src);
+                alert('Error al cargar el audio. Verifica que el archivo exista y sea compatible.');
+            });
+
+            // Sincronizar audio con video
+            videoElement.addEventListener('play', () => {
+                console.log('Video playing, attempting to play audio'); // Depuración
+                audioElement.play().catch(error => {
+                    console.error('Error al reproducir el audio:', error);
+                    alert('No se pudo reproducir el audio debido a restricciones del navegador o un error en el archivo.');
+                });
+            });
+
+            videoElement.addEventListener('pause', () => {
+                console.log('Video paused, pausing audio'); // Depuración
+                audioElement.pause();
+            });
+
+            videoElement.addEventListener('ended', () => {
+                console.log('Video ended, resetting audio'); // Depuración
+                audioElement.pause();
+                audioElement.currentTime = 0;
+            });
+
+            // Control de fade-in y fade-out
+            videoElement.addEventListener('timeupdate', () => {
+                const currentTime = videoElement.currentTime;
+                const duration = videoElement.duration;
+
+                if (!duration) return; // Evitar cálculos si la duración no está disponible
+
+                // Para videos cortos (< 20 segundos), dividir proporcionalmente
+                const fadeDuration = Math.min(10, duration / 2); // Máximo 10 segundos por fade, o mitad de la duración
+                const fadeInEnd = fadeDuration;
+                const fadeOutStart = duration - fadeDuration;
+
+                // Fade-in
+                if (currentTime <= fadeInEnd) {
+                    audioElement.volume = Math.min(currentTime / fadeInEnd, 1); // Incrementa de 0 a 1
+                    console.log('Fade-in:', audioElement.volume); // Depuración
+                }
+                // Fade-out
+                else if (currentTime >= fadeOutStart) {
+                    audioElement.volume = Math.max((duration - currentTime) / fadeDuration, 0); // Disminuye de 1 a 0
+                    console.log('Fade-out:', audioElement.volume); // Depuración
+                }
+                // Volumen máximo entre fade-in y fade-out
+                else {
+                    audioElement.volume = 1;
+                    console.log('Full volume:', audioElement.volume); // Depuración
+                }
+            });
+
+            closeModal.addEventListener('click', () => {
+                console.log('Closing modal'); // Depuración
+                videoModal.style.display = 'none';
+                videoElement.pause();
+                videoElement.currentTime = 0;
+                audioElement.pause();
+                audioElement.currentTime = 0;
+            });
+
+            videoModal.addEventListener('click', (e) => {
+                if (e.target === videoModal) {
+                    console.log('Closing modal by clicking outside'); // Depuración
+                    videoModal.style.display = 'none';
+                    videoElement.pause();
+                    videoElement.currentTime = 0;
+                    audioElement.pause();
+                    audioElement.currentTime = 0;
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && videoModal.style.display === 'flex') {
+                    console.log('Closing modal with Escape key'); // Depuración
+                    videoModal.style.display = 'none';
+                    videoElement.pause();
+                    videoElement.currentTime = 0;
+                    audioElement.pause();
+                    audioElement.currentTime = 0;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

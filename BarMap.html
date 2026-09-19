@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Bar Map</title>
+	<link rel="icon" type="img/x-icon" href="img/favicon.ico">
+    <link rel="icon" type="img/png" href="img/favicon.png">
+	<link rel="stylesheet" href="css/BarMap.css">
+    <script src="js/aframe.min.js"></script>
+</head>
+<body>
+    <a-scene>
+        <a-assets>
+            <img id="panorama" src="https://live.staticflickr.com/65535/53924274490_d8b600cfc4_f.jpg" crossorigin="anonymous" />
+        </a-assets>
+        <a-sky src="#panorama" rotation="0 -90 0"></a-sky>
+    </a-scene>
+    <!-- Botón BACK para regresar al menú -->
+    <a href="indexMenu.html" class="back-button">BACK</a>
+</body>
+</html>

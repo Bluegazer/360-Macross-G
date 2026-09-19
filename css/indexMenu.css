@@ -1,0 +1,247 @@
+/* Reusable text-shadow class */
+.text-shadow {
+    text-shadow: 1px 0 black, 0 -1px black, -1px 0 black, 0 1px black;
+}
+
+header {
+    background: rgba(0, 0, 0, 0.4);
+    width: 99.9%;
+    text-align: center;
+    z-index: 100;
+    border-radius: 10px;
+    border: 0.3px solid white;
+    text-shadow: 1px 0 black, 0 -1px black, -1px 0 black, 0 1px black;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+nav ul li {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+nav ul li a {
+    display: block;
+    padding: 15px;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border 0.3s ease-in-out;
+}
+
+nav ul li:hover a {
+    background: rgba(0, 0, 255, 0.2);
+    border-radius: 7px;
+    border: 1px solid white;
+    transform: scale(1.0);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+body {
+    background-image: url('../img/SDF1Bridge.jpg');
+    background-color: #000;
+    margin: 0;
+}
+
+#text {
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgba(255, 255, 255, 1);
+    font-size: 16px;
+    font-weight: bold;
+    background: rgba(0, 0, 255, 0.125);
+    border-radius: 7px;
+    border: 0.1px solid white;
+    padding: 20px;
+    text-align: center;
+    animation: scaleUp 1.5s ease-in-out forwards;
+    width: 800px;
+    margin: 20px auto;
+    z-index: 800;
+}
+
+@keyframes scaleUp {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.volume-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 15px;
+    padding-right: 20px;
+    gap: 10px;
+}
+
+#volumeControl {
+    width: 100px;
+    margin-left: 10px;
+    vertical-align: middle;
+    background: rgba(0, 0, 255, 0.2);
+    border-radius: 5px;
+}
+
+#volumeMinus, #volumePlus, #audioToggle {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(0, 0, 255, 0.2);
+    border: 0.3px solid white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border 0.3s ease-in-out;
+    text-shadow: 1px 0 black, 0 -1px black, -1px 0 black, 0 1px black;
+}
+
+#volumeMinus {
+    margin-right: -8px; /* Ajusta el botón "-" más cerca de la barra de volumen */
+}
+
+#volumeMinus:hover, #volumePlus:hover, #audioToggle:hover {
+    background: rgba(0, 0, 255, 0.4);
+    border: 1px solid white;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+label[for="volumeControl"] {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 0 black, 0 -1px black, -1px 0 black, 0 1px black;
+}
+
+/* Modal styles for age verification */
+#ageModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: rgba(0, 0, 255, 0.2);
+    padding: 20px;
+    border-radius: 7px;
+    border: 1px solid white;
+    color: #fff;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 1px 0 black, 0 -1px black, -1px 0 black, 0 1px black;
+}
+
+.modal-content p {
+    margin: 0 0 15px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.modal-content input {
+    padding: 5px;
+    font-size: 16px;
+    width: 160px;
+    border-radius: 5px;
+    border: 1px solid white;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    text-align: center;
+}
+
+.modal-content button {
+    padding: 5px 15px;
+    margin: 10px 5px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: rgba(0, 0, 255, 0.2);
+    border: 1px solid white;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.modal-content button:hover {
+    background: rgba(0, 0, 255, 0.4);
+}
+
+/* Creative Commons License */
+.cc-license {
+    margin-top: 20px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 0 black, 0 -1px black, -1px 0 black, 0 1px black;
+}
+
+.cc-license a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.cc-license a:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.cc-license img {
+    vertical-align: middle;
+    max-width: 1.2em; /* Aumenta ligeramente el tamaño para mejor visibilidad */
+    max-height: 1.2em;
+    margin-left: 0.3em; /* Ajusta el espaciado entre íconos */
+}
+
+/* Responsive adjustments */
+@media (max-width: 850px) {
+    #text {
+        width: 90%;
+        padding: 15px;
+    }
+    .volume-container {
+        padding-right: 15px;
+        flex-wrap: wrap;
+    }
+    #volumeMinus, #volumePlus, #audioToggle {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+    #volumeControl {
+        width: 80px;
+    }
+    .modal-content {
+        width: 90%;
+        max-width: 300px;
+    }
+    .cc-license {
+        font-size: 12px; /* Reduce el tamaño del texto en pantallas pequeñas */
+    }
+    .cc-license img {
+        max-width: 1em; /* Ajusta el tamaño de los íconos en pantallas pequeñas */
+        max-height: 1em;
+    }
+}

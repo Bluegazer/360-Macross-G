@@ -1,0 +1,149 @@
+/* Reusable text-shadow class */
+.text-shadow {
+    text-shadow: 1px 0 black, 0 -1px black, -1px 0 black, 0 1px black;
+}
+
+header {
+    background: rgba(0, 0, 0, 0.4);
+    width: 99.9%;
+    text-align: center;
+    z-index: 100;
+    border-radius: 10px;
+    border: 0.3px solid white;
+    text-shadow: 1px 0 black, 0 -1px black, -1px 0 black, 0 1px black;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+nav ul li {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+nav ul li a {
+    display: block;
+    padding: 15px;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border 0.3s ease-in-out;
+}
+
+nav ul li:hover a {
+    background: rgba(255, 0, 0, 0.21);
+    border-radius: 7px;
+    border: 1px solid white;
+    transform: scale(1.0);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+body {
+    background-image: url('../img/MacrossGirls.jpg');
+    background-color: #000;
+    margin: 0;
+}
+
+#text {
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgba(255, 255, 255, 1);
+    font-size: 16px;
+    font-weight: bold;
+    background: rgba(255, 0, 0, 0.21);
+    border-radius: 7px;
+    border: 0.1px solid white;
+    padding: 20px;
+    text-align: center;
+    animation: scaleUp 1.5s ease-in-out forwards;
+    width: 800px;
+    margin: 20px auto;
+    z-index: 800;
+}
+
+@keyframes scaleUp {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.volume-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; /* Centra verticalmente los elementos */
+    margin-top: 15px;
+    padding-right: 20px;
+    gap: 10px; /* Espacio entre elementos */
+}
+
+#volumeControl {
+    width: 100px;
+    margin-left: 10px;
+    vertical-align: middle;
+    background: rgba(255, 0, 0, 0.2); /* Matches red hover effect */
+    border-radius: 5px;
+}
+
+#volumeMinus, #volumePlus, #audioToggle {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.4); /* Fondo similar al header */
+    border: 0.3px solid white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border 0.3s ease-in-out;
+    text-shadow: 1px 0 black, 0 -1px black, -1px 0 black, 0 1px black;
+}
+
+#volumeMinus {
+    margin-right: -8px; /* Mueve el botón "-" más cerca de la barra de volumen */
+}
+
+#volumeMinus:hover, #volumePlus:hover, #audioToggle:hover {
+    background: rgba(255, 0, 0, 0.21); /* Efecto hover similar al menú */
+    border: 1px solid white;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+label[for="volumeControl"] {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 0 black, 0 -1px black, -1px 0 black, 0 1px black;
+}
+
+/* Responsive adjustments */
+@media (max-width: 850px) {
+    #text {
+        width: 90%;
+        padding: 15px;
+    }
+    .volume-container {
+        padding-right: 15px;
+        flex-wrap: wrap; /* Permite que los elementos se ajusten en pantallas pequeñas */
+    }
+    #volumeMinus, #volumePlus, #audioToggle {
+        font-size: 12px; /* Tamaño de fuente más pequeño en móviles */
+        padding: 4px 8px;
+    }
+    #volumeControl {
+        width: 80px; /* Barra más pequeña en móviles */
+    }
+}

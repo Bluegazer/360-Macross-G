@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Kim</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/Kim.css">
+    <script>
+      function inhabilitar(){
+          alert("NO");
+          return false;
+      }
+      
+      document.oncontextmenu = inhabilitar;
+      
+      document.addEventListener('DOMContentLoaded', () => {
+          const card = document.querySelector('.card');
+          const text = document.querySelector('.overlay-text');
+          const images = document.querySelectorAll('.card img');
+          const infoBtn = document.querySelector('#infoBtn');
+          let currentImageIndex = 0;
+          let isInfoVisible = false;
+
+          images[0].style.opacity = 1;
+          text.classList.remove('visible'); // Ensure initially hidden
+
+          card.addEventListener('mousemove', (e) => {
+              const rect = card.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const index = Math.floor((x / rect.width) * 120);
+              images.forEach((img, i) => {
+                  img.style.opacity = i === index ? 1 : 0;
+              });
+              currentImageIndex = index;
+              text.innerHTML = `
+                <p class="stat">Kim Kabirov</p>
+            <p class="narrative">Kim is a U.N. Spacy officer serving as a Macross Operator on the SDF-1 Macross bridge during Space War I. 
+			She is mainly in charge of ship's control and broadcasting system. Has a short hair cut and boyish appearance and is known for being a little forward towards others. 
+			She is a sloppy in her work, as she tends to gossip, hoping nobody would catch her.</p>
+            <p class="stat">Name: Kim Kabirov</p>
+            <p class="stat">Birthdate: Unknown</p>
+            <p class="stat">Birthplace: South Asia Federation</p>
+            <p class="stat">Ethnicity: Russian (Siberia)</p>
+            <p class="stat">Age: 18 (19 in TV series; 21 in film)</p>
+            <p class="stat">Blood Type: A</p>
+            <p class="stat">Height: 164 cm</p>
+            <p class="stat">Measurements: 80-59-85 cm</p>
+            <p class="stat">Gender: Female</p>
+            <p class="stat">Weight: 49 kg</p>
+            <p class="stat">Occupation: Ship Administration, Level One Operator</p>
+            <p class="stat">Rank: First Lieutenant</p>`;
+          });
+
+          infoBtn.addEventListener('click', () => {
+              isInfoVisible = !isInfoVisible;
+              text.classList.toggle('visible', isInfoVisible); // Toggle visibility class
+              infoBtn.textContent = isInfoVisible ? 'HIDE INFO' : 'INFO';
+          });
+
+          card.addEventListener('mouseleave', () => {
+              images.forEach((img, i) => {
+                  img.style.opacity = i === currentImageIndex ? 1 : 0;
+              });
+          });
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+          const card = document.querySelector('.card');
+          const images = document.querySelectorAll('.card img');
+          const playBtn = document.querySelector('#playBtn');
+          const stopBtn = document.querySelector('#stopBtn');
+          let currentImageIndex = 0;
+          let autoPlayInterval = null;
+
+          if (images.length !== 120) {
+              console.error('Expected 120 images, found:', images.length);
+          }
+
+          images[0].style.opacity = 1;
+          stopBtn.disabled = true;
+
+          const updateImage = (index) => {
+              images.forEach((img, i) => {
+                  img.style.opacity = i === index ? 1 : 0;
+              });
+              currentImageIndex = index;
+          };
+
+          const startAutoPlay = () => {
+              if (!autoPlayInterval) {
+                  autoPlayInterval = setInterval(() => {
+                      currentImageIndex = (currentImageIndex + 1) % images.length;
+                      updateImage(currentImageIndex);
+                  }, 50);
+                  playBtn.disabled = true;
+                  stopBtn.disabled = false;
+              }
+          };
+
+          const stopAutoPlay = () => {
+              if (autoPlayInterval) {
+                  clearInterval(autoPlayInterval);
+                  autoPlayInterval = null;
+                  playBtn.disabled = false;
+                  stopBtn.disabled = true;
+              }
+          };
+
+          playBtn.addEventListener('click', startAutoPlay);
+          stopBtn.addEventListener('click', stopAutoPlay);
+
+          let timeout;
+          card.addEventListener('mousemove', (e) => {
+              stopAutoPlay();
+              clearTimeout(timeout);
+              timeout = setTimeout(() => {
+                  const rect = card.getBoundingClientRect();
+                  const x = e.clientX - rect.left;
+                  const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+                  updateImage(index);
+              }, 10);
+          });
+
+          card.addEventListener('mouseleave', () => {
+              updateImage(currentImageIndex);
+          });
+
+          card.addEventListener('keydown', (e) => {
+              stopAutoPlay();
+              if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+                  currentImageIndex--;
+              } else if (e.key === 'ArrowRight' && currentImageIndex < images.length - 1) {
+                  currentImageIndex++;
+              }
+              updateImage(currentImageIndex);
+          });
+
+          card.addEventListener('touchmove', (e) => {
+              stopAutoPlay();
+              e.preventDefault();
+              const touch = e.touches[0];
+              const rect = card.getBoundingClientRect();
+              const x = touch.clientX - rect.left;
+              const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+              updateImage(index);
+          });
+      });
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="indexMenu.html">BACK</a></li>
+        </ul>
+    </nav>
+    <div id="arrow">
+        <h1>&#9668;Kim Kabirov&#9658;</h1>
+        <div class="button-container">
+            <button id="playBtn">&#9658; PLAY</button>
+            <button id="stopBtn">&#9632; STOP</button>
+            <button id="infoBtn">INFO</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="overlay-text">
+            <p class="stat">Kim Kabirov</p>
+            <p class="narrative">Kim is a U.N. Spacy officer serving as a Macross Operator on the SDF-1 Macross bridge during Space War I. 
+			She is mainly in charge of ship's control and broadcasting system. Has a short hair cut and boyish appearance and is known for being a little forward towards others. 
+			She is a sloppy in her work, as she tends to gossip, hoping nobody would catch her.</p>
+            <p class="stat">Name: Kim Kabirov</p>
+            <p class="stat">Birthdate: Unknown</p>
+            <p class="stat">Birthplace: South Asia Federation</p>
+            <p class="stat">Ethnicity: Russian (Siberia)</p>
+            <p class="stat">Age: 18 (19 in TV series; 21 in film)</p>
+            <p class="stat">Blood Type: A</p>
+            <p class="stat">Height: 164 cm</p>
+            <p class="stat">Measurements: 80-59-85 cm</p>
+            <p class="stat">Gender: Female</p>
+            <p class="stat">Weight: 49 kg</p>
+            <p class="stat">Occupation: Ship Administration, Level One Operator</p>
+            <p class="stat">Rank: First Lieutenant</p>
+        </div>
+        <span style="--i:0;"></span>
+        <img src="img/Kim/Kim0.jpg" alt="">
+        <span style="--i:1;"></span>
+        <img src="img/Kim/Kim1.jpg" alt="">
+        <span style="--i:2;"></span>
+        <img src="img/Kim/Kim2.jpg" alt="">
+        <span style="--i:3;"></span>
+        <img src="img/Kim/Kim3.jpg" alt="">
+        <span style="--i:4;"></span>
+        <img src="img/Kim/Kim4.jpg" alt="">
+        <span style="--i:5;"></span>
+        <img src="img/Kim/Kim5.jpg" alt="">
+        <span style="--i:6;"></span>
+        <img src="img/Kim/Kim6.jpg" alt="">
+        <span style="--i:7;"></span>
+        <img src="img/Kim/Kim7.jpg" alt="">
+        <span style="--i:8;"></span>
+        <img src="img/Kim/Kim8.jpg" alt="">
+        <span style="--i:9;"></span>
+        <img src="img/Kim/Kim9.jpg" alt="">
+        <span style="--i:10;"></span>
+        <img src="img/Kim/Kim10.jpg" alt="">
+        <span style="--i:11;"></span>
+        <img src="img/Kim/Kim11.jpg" alt="">
+        <span style="--i:12;"></span>
+        <img src="img/Kim/Kim12.jpg" alt="">
+        <span style="--i:13;"></span>
+        <img src="img/Kim/Kim13.jpg" alt="">
+        <span style="--i:14;"></span>
+        <img src="img/Kim/Kim14.jpg" alt="">
+        <span style="--i:15;"></span>
+        <img src="img/Kim/Kim15.jpg" alt="">
+        <span style="--i:16;"></span>
+        <img src="img/Kim/Kim16.jpg" alt="">
+        <span style="--i:17;"></span>
+        <img src="img/Kim/Kim17.jpg" alt="">
+        <span style="--i:18;"></span>
+        <img src="img/Kim/Kim18.jpg" alt="">
+        <span style="--i:19;"></span>
+        <img src="img/Kim/Kim19.jpg" alt="">
+        <span style="--i:20;"></span>
+        <img src="img/Kim/Kim20.jpg" alt="">
+        <span style="--i:21;"></span>
+        <img src="img/Kim/Kim21.jpg" alt="">
+        <span style="--i:22;"></span>
+        <img src="img/Kim/Kim22.jpg" alt="">
+        <span style="--i:23;"></span>
+        <img src="img/Kim/Kim23.jpg" alt="">
+        <span style="--i:24;"></span>
+        <img src="img/Kim/Kim24.jpg" alt="">
+        <span style="--i:25;"></span>
+        <img src="img/Kim/Kim25.jpg" alt="">
+        <span style="--i:26;"></span>
+        <img src="img/Kim/Kim26.jpg" alt="">
+        <span style="--i:27;"></span>
+        <img src="img/Kim/Kim27.jpg" alt="">
+        <span style="--i:28;"></span>
+        <img src="img/Kim/Kim28.jpg" alt="">
+        <span style="--i:29;"></span>
+        <img src="img/Kim/Kim29.jpg" alt="">
+        <span style="--i:30;"></span>
+        <img src="img/Kim/Kim30.jpg" alt="">
+        <span style="--i:31;"></span>
+        <img src="img/Kim/Kim31.jpg" alt="">
+        <span style="--i:32;"></span>
+        <img src="img/Kim/Kim32.jpg" alt="">
+        <span style="--i:33;"></span>
+        <img src="img/Kim/Kim33.jpg" alt="">
+        <span style="--i:34;"></span>
+        <img src="img/Kim/Kim34.jpg" alt="">
+        <span style="--i:35;"></span>
+        <img src="img/Kim/Kim35.jpg" alt="">
+        <span style="--i:36;"></span>
+        <img src="img/Kim/Kim36.jpg" alt="">
+        <span style="--i:37;"></span>
+        <img src="img/Kim/Kim37.jpg" alt="">
+        <span style="--i:38;"></span>
+        <img src="img/Kim/Kim38.jpg" alt="">
+        <span style="--i:39;"></span>
+        <img src="img/Kim/Kim39.jpg" alt="">
+        <span style="--i:40;"></span>
+        <img src="img/Kim/Kim40.jpg" alt="">
+        <span style="--i:41;"></span>
+        <img src="img/Kim/Kim41.jpg" alt="">
+        <span style="--i:42;"></span>
+        <img src="img/Kim/Kim42.jpg" alt="">
+        <span style="--i:43;"></span>
+        <img src="img/Kim/Kim43.jpg" alt="">
+        <span style="--i:44;"></span>
+        <img src="img/Kim/Kim44.jpg" alt="">
+        <span style="--i:45;"></span>
+        <img src="img/Kim/Kim45.jpg" alt="">
+        <span style="--i:46;"></span>
+        <img src="img/Kim/Kim46.jpg" alt="">
+        <span style="--i:47;"></span>
+        <img src="img/Kim/Kim47.jpg" alt="">
+        <span style="--i:48;"></span>
+        <img src="img/Kim/Kim48.jpg" alt="">
+        <span style="--i:49;"></span>
+        <img src="img/Kim/Kim49.jpg" alt="">
+        <span style="--i:50;"></span>
+        <img src="img/Kim/Kim50.jpg" alt="">
+        <span style="--i:51;"></span>
+        <img src="img/Kim/Kim51.jpg" alt="">
+        <span style="--i:52;"></span>
+        <img src="img/Kim/Kim52.jpg" alt="">
+        <span style="--i:53;"></span>
+        <img src="img/Kim/Kim53.jpg" alt="">
+        <span style="--i:54;"></span>
+        <img src="img/Kim/Kim54.jpg" alt="">
+        <span style="--i:55;"></span>
+        <img src="img/Kim/Kim55.jpg" alt="">
+        <span style="--i:56;"></span>
+        <img src="img/Kim/Kim56.jpg" alt="">
+        <span style="--i:57;"></span>
+        <img src="img/Kim/Kim57.jpg" alt="">
+        <span style="--i:58;"></span>
+        <img src="img/Kim/Kim58.jpg" alt="">
+        <span style="--i:59;"></span>
+        <img src="img/Kim/Kim59.jpg" alt="">
+        <span style="--i:60;"></span>
+        <img src="img/Kim/Kim60.jpg" alt="">
+        <span style="--i:61;"></span>
+        <img src="img/Kim/Kim61.jpg" alt="">
+        <span style="--i:62;"></span>
+        <img src="img/Kim/Kim62.jpg" alt="">
+        <span style="--i:63;"></span>
+        <img src="img/Kim/Kim63.jpg" alt="">
+        <span style="--i:64;"></span>
+        <img src="img/Kim/Kim64.jpg" alt="">
+        <span style="--i:65;"></span>
+        <img src="img/Kim/Kim65.jpg" alt="">
+        <span style="--i:66;"></span>
+        <img src="img/Kim/Kim66.jpg" alt="">
+        <span style="--i:67;"></span>
+        <img src="img/Kim/Kim67.jpg" alt="">
+        <span style="--i:68;"></span>
+        <img src="img/Kim/Kim68.jpg" alt="">
+        <span style="--i:69;"></span>
+        <img src="img/Kim/Kim69.jpg" alt="">
+        <span style="--i:70;"></span>
+        <img src="img/Kim/Kim70.jpg" alt="">
+        <span style="--i:71;"></span>
+        <img src="img/Kim/Kim71.jpg" alt="">
+        <span style="--i:72;"></span>
+        <img src="img/Kim/Kim72.jpg" alt="">
+        <span style="--i:73;"></span>
+        <img src="img/Kim/Kim73.jpg" alt="">
+        <span style="--i:74;"></span>
+        <img src="img/Kim/Kim74.jpg" alt="">
+        <span style="--i:75;"></span>
+        <img src="img/Kim/Kim75.jpg" alt="">
+        <span style="--i:76;"></span>
+        <img src="img/Kim/Kim76.jpg" alt="">
+        <span style="--i:77;"></span>
+        <img src="img/Kim/Kim77.jpg" alt="">
+        <span style="--i:78;"></span>
+        <img src="img/Kim/Kim78.jpg" alt="">
+        <span style="--i:79;"></span>
+        <img src="img/Kim/Kim79.jpg" alt="">
+        <span style="--i:80;"></span>
+        <img src="img/Kim/Kim80.jpg" alt="">
+        <span style="--i:81;"></span>
+        <img src="img/Kim/Kim81.jpg" alt="">
+        <span style="--i:82;"></span>
+        <img src="img/Kim/Kim82.jpg" alt="">
+        <span style="--i:83;"></span>
+        <img src="img/Kim/Kim83.jpg" alt="">
+        <span style="--i:84;"></span>
+        <img src="img/Kim/Kim84.jpg" alt="">
+        <span style="--i:85;"></span>
+        <img src="img/Kim/Kim85.jpg" alt="">
+        <span style="--i:86;"></span>
+        <img src="img/Kim/Kim86.jpg" alt="">
+        <span style="--i:87;"></span>
+        <img src="img/Kim/Kim87.jpg" alt="">
+        <span style="--i:88;"></span>
+        <img src="img/Kim/Kim88.jpg" alt="">
+        <span style="--i:89;"></span>
+        <img src="img/Kim/Kim89.jpg" alt="">
+        <span style="--i:90;"></span>
+        <img src="img/Kim/Kim90.jpg" alt="">
+        <span style="--i:91;"></span>
+        <img src="img/Kim/Kim91.jpg" alt="">
+        <span style="--i:92;"></span>
+        <img src="img/Kim/Kim92.jpg" alt="">
+        <span style="--i:93;"></span>
+        <img src="img/Kim/Kim93.jpg" alt="">
+        <span style="--i:94;"></span>
+        <img src="img/Kim/Kim94.jpg" alt="">
+        <span style="--i:95;"></span>
+        <img src="img/Kim/Kim95.jpg" alt="">
+        <span style="--i:96;"></span>
+        <img src="img/Kim/Kim96.jpg" alt="">
+        <span style="--i:97;"></span>
+        <img src="img/Kim/Kim97.jpg" alt="">
+        <span style="--i:98;"></span>
+        <img src="img/Kim/Kim98.jpg" alt="">
+        <span style="--i:99;"></span>
+        <img src="img/Kim/Kim99.jpg" alt="">
+        <span style="--i:100;"></span>
+        <img src="img/Kim/Kim100.jpg" alt="">
+        <span style="--i:101;"></span>
+        <img src="img/Kim/Kim101.jpg" alt="">
+        <span style="--i:102;"></span>
+        <img src="img/Kim/Kim102.jpg" alt="">
+        <span style="--i:103;"></span>
+        <img src="img/Kim/Kim103.jpg" alt="">
+        <span style="--i:104;"></span>
+        <img src="img/Kim/Kim104.jpg" alt="">
+        <span style="--i:105;"></span>
+        <img src="img/Kim/Kim105.jpg" alt="">
+        <span style="--i:106;"></span>
+        <img src="img/Kim/Kim106.jpg" alt="">
+        <span style="--i:107;"></span>
+        <img src="img/Kim/Kim107.jpg" alt="">
+        <span style="--i:108;"></span>
+        <img src="img/Kim/Kim108.jpg" alt="">
+        <span style="--i:109;"></span>
+        <img src="img/Kim/Kim109.jpg" alt="">
+        <span style="--i:110;"></span>
+        <img src="img/Kim/Kim110.jpg" alt="">
+        <span style="--i:111;"></span>
+        <img src="img/Kim/Kim111.jpg" alt="">
+        <span style="--i:112;"></span>
+        <img src="img/Kim/Kim112.jpg" alt="">
+        <span style="--i:113;"></span>
+        <img src="img/Kim/Kim113.jpg" alt="">
+        <span style="--i:114;"></span>
+        <img src="img/Kim/Kim114.jpg" alt="">
+        <span style="--i:115;"></span>
+        <img src="img/Kim/Kim115.jpg" alt="">
+        <span style="--i:116;"></span>
+        <img src="img/Kim/Kim116.jpg" alt="">
+        <span style="--i:117;"></span>
+        <img src="img/Kim/Kim117.jpg" alt="">
+        <span style="--i:118;"></span>
+        <img src="img/Kim/Kim118.jpg" alt="">
+        <span style="--i:119;"></span>
+        <img src="img/Kim/Kim119.jpg" alt="">
+    </div>
+	<!-- Filtro SVG para ruido estático -->
+    <svg id="noiseFilter">
+        <defs>
+            <filter id="noiseFilter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+                <feColorMatrix type="saturate" values="0"/>
+                <feComponentTransfer>
+                    <feFuncR type="linear" slope="0.5" intercept="0.25"/>
+                    <feFuncG type="linear" slope="0.5" intercept="0.25"/>
+                    <feFuncB type="linear" slope="0.5" intercept="0.25"/>
+                </feComponentTransfer>
+            </filter>
+        </defs>
+    </svg>
+</body>
+</html>

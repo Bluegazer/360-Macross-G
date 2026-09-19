@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Swimsuits</title>
+    <link rel="icon" type="img/x-icon" href="img/favicon.ico">
+    <link rel="icon" type="img/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/Swim.css">
+    <nav>
+        <ul>
+            <li><a href="indexMenuNSFW.html">BACK</a></li>
+        </ul>
+    </nav>
+    <script>
+      function inhabilitar(){
+          alert ("NO")
+          return false
+      }
+      
+      document.oncontextmenu = inhabilitar
+    // JavaScript to update overlay text and keep an image visible
+      document.addEventListener('DOMContentLoaded', () => {
+          const card = document.querySelector('.card');
+          const text = document.querySelector('.overlay-text');
+          const images = document.querySelectorAll('.card img');
+          let currentImageIndex = 0; // Track the currently visible image
+
+          // Set the first image as visible by default
+          images[0].style.opacity = 1;
+
+          card.addEventListener('mousemove', (e) => {
+              const rect = card.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const index = Math.floor((x / rect.width) * 120);
+              images.forEach((img, i) => {
+                  img.style.opacity = i === index ? 1 : 0;
+              });
+              currentImageIndex = index; // Update the current image index
+              text.textContent = ``;
+          });
+
+         // Ensure an image stays visible when mouse leaves
+          card.addEventListener('mouseleave', () => {
+              images.forEach((img, i) => {
+                  img.style.opacity = i === currentImageIndex ? 1 : 0;
+              });
+          });
+      });
+      
+document.addEventListener('DOMContentLoaded', () => {
+        const card = document.querySelector('.card');
+        const images = document.querySelectorAll('.card img');
+        const playBtn = document.querySelector('#playBtn');
+        const stopBtn = document.querySelector('#stopBtn');
+        let currentImageIndex = 0;
+        let autoPlayInterval = null;
+
+        if (images.length !== 120) {
+            console.error('Expected 120 images, found:', images.length);
+        }
+
+        images[0].style.opacity = 1;
+        stopBtn.disabled = true; // Deshabilitar el botón "Stop" al inicio
+
+        // Función para cambiar imágenes
+        const updateImage = (index) => {
+            images.forEach((img, i) => {
+                img.style.opacity = i === index ? 1 : 0;
+            });
+            currentImageIndex = index;
+        };
+
+        // Lógica de animación automática
+        const startAutoPlay = () => {
+            if (!autoPlayInterval) {
+                autoPlayInterval = setInterval(() => {
+                    currentImageIndex = (currentImageIndex + 1) % images.length; // Ciclo circular
+                    updateImage(currentImageIndex);
+                }, 120); // Cambia cada 120ms
+                playBtn.disabled = true;
+                stopBtn.disabled = false;
+            }
+        };
+
+        const stopAutoPlay = () => {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+                playBtn.disabled = false;
+                stopBtn.disabled = true;
+            }
+        };
+
+        // Evento para el botón Play
+        playBtn.addEventListener('click', startAutoPlay);
+
+        // Evento para el botón Stop
+        stopBtn.addEventListener('click', stopAutoPlay);
+
+        // Detener animación al interactuar con el mouse
+        let timeout;
+        card.addEventListener('mousemove', (e) => {
+            stopAutoPlay(); // Detener animación automática
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+                updateImage(index);
+            }, 10);
+        });
+
+        card.addEventListener('mouseleave', () => {
+            updateImage(currentImageIndex);
+        });
+
+        // Soporte para teclado
+        card.addEventListener('keydown', (e) => {
+            stopAutoPlay(); // Detener animación automática
+            if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+                currentImageIndex--;
+            } else if (e.key === 'ArrowRight' && currentImageIndex < images.length - 1) {
+                currentImageIndex++;
+            }
+            updateImage(currentImageIndex);
+        });
+
+        // Soporte para touch (opcional, para dispositivos móviles)
+        card.addEventListener('touchmove', (e) => {
+            stopAutoPlay(); // Detener animación automática
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = card.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+            updateImage(index);
+        });
+    });
+    </script>
+</head>
+<body>
+    <div id="arrow">
+        <h1>&#9668;SWIMSUITS&#9658;</h1>
+        <div class="button-container">
+            <button id="playBtn">&#9658; PLAY</button>
+            <button id="stopBtn">&#9632; STOP</button>
+        </div>
+    </div>
+    <div class="card">
+        <span style="--i:0;"></span>
+        <img src="img/Swim/Swim0.jpg" alt="">
+        <span style="--i:1;"></span>
+        <img src="img/Swim/Swim1.jpg" alt="">
+        <span style="--i:2;"></span>
+        <img src="img/Swim/Swim2.jpg" alt="">
+        <span style="--i:3;"></span>
+        <img src="img/Swim/Swim3.jpg" alt="">
+        <span style="--i:4;"></span>
+        <img src="img/Swim/Swim4.jpg" alt="">
+        <span style="--i:5;"></span>
+        <img src="img/Swim/Swim5.jpg" alt="">
+        <span style="--i:6;"></span>
+        <img src="img/Swim/Swim6.jpg" alt="">
+        <span style="--i:7;"></span>
+        <img src="img/Swim/Swim7.jpg" alt="">
+        <span style="--i:8;"></span>
+        <img src="img/Swim/Swim8.jpg" alt="">
+        <span style="--i:9;"></span>
+        <img src="img/Swim/Swim9.jpg" alt="">
+        <span style="--i:10;"></span>
+        <img src="img/Swim/Swim10.jpg" alt="">
+        <span style="--i:11;"></span>
+        <img src="img/Swim/Swim11.jpg" alt="">
+        <span style="--i:12;"></span>
+        <img src="img/Swim/Swim12.jpg" alt="">
+        <span style="--i:13;"></span>
+        <img src="img/Swim/Swim13.jpg" alt="">
+        <span style="--i:14;"></span>
+        <img src="img/Swim/Swim14.jpg" alt="">
+        <span style="--i:15;"></span>
+        <img src="img/Swim/Swim15.jpg" alt="">
+        <span style="--i:16;"></span>
+        <img src="img/Swim/Swim16.jpg" alt="">
+        <span style="--i:17;"></span>
+        <img src="img/Swim/Swim17.jpg" alt="">
+        <span style="--i:18;"></span>
+        <img src="img/Swim/Swim18.jpg" alt="">
+        <span style="--i:19;"></span>
+        <img src="img/Swim/Swim19.jpg" alt="">
+        <span style="--i:20;"></span>
+        <img src="img/Swim/Swim20.jpg" alt="">
+        <span style="--i:21;"></span>
+        <img src="img/Swim/Swim21.jpg" alt="">
+        <span style="--i:22;"></span>
+        <img src="img/Swim/Swim22.jpg" alt="">
+        <span style="--i:23;"></span>
+        <img src="img/Swim/Swim23.jpg" alt="">
+        <span style="--i:24;"></span>
+        <img src="img/Swim/Swim24.jpg" alt="">
+        <span style="--i:25;"></span>
+        <img src="img/Swim/Swim25.jpg" alt="">
+        <span style="--i:26;"></span>
+        <img src="img/Swim/Swim26.jpg" alt="">
+        <span style="--i:27;"></span>
+        <img src="img/Swim/Swim27.jpg" alt="">
+        <span style="--i:28;"></span>
+        <img src="img/Swim/Swim28.jpg" alt="">
+        <span style="--i:29;"></span>
+        <img src="img/Swim/Swim29.jpg" alt="">
+        <span style="--i:30;"></span>
+        <img src="img/Swim/Swim30.jpg" alt="">
+        <span style="--i:31;"></span>
+        <img src="img/Swim/Swim31.jpg" alt="">
+        <span style="--i:32;"></span>
+        <img src="img/Swim/Swim32.jpg" alt="">
+        <span style="--i:33;"></span>
+        <img src="img/Swim/Swim33.jpg" alt="">
+        <span style="--i:34;"></span>
+        <img src="img/Swim/Swim34.jpg" alt="">
+        <span style="--i:35;"></span>
+        <img src="img/Swim/Swim35.jpg" alt="">
+        <span style="--i:36;"></span>
+        <img src="img/Swim/Swim36.jpg" alt="">
+        <span style="--i:37;"></span>
+        <img src="img/Swim/Swim37.jpg" alt="">
+        <span style="--i:38;"></span>
+        <img src="img/Swim/Swim38.jpg" alt="">
+        <span style="--i:39;"></span>
+        <img src="img/Swim/Swim39.jpg" alt="">
+        <span style="--i:40;"></span>
+        <img src="img/Swim/Swim40.jpg" alt="">
+        <span style="--i:41;"></span>
+        <img src="img/Swim/Swim41.jpg" alt="">
+        <span style="--i:42;"></span>
+        <img src="img/Swim/Swim42.jpg" alt="">
+        <span style="--i:43;"></span>
+        <img src="img/Swim/Swim43.jpg" alt="">
+        <span style="--i:44;"></span>
+        <img src="img/Swim/Swim44.jpg" alt="">
+        <span style="--i:45;"></span>
+        <img src="img/Swim/Swim45.jpg" alt="">
+        <span style="--i:46;"></span>
+        <img src="img/Swim/Swim46.jpg" alt="">
+        <span style="--i:47;"></span>
+        <img src="img/Swim/Swim47.jpg" alt="">
+        <span style="--i:48;"></span>
+        <img src="img/Swim/Swim48.jpg" alt="">
+        <span style="--i:49;"></span>
+        <img src="img/Swim/Swim49.jpg" alt="">
+        <span style="--i:50;"></span>
+        <img src="img/Swim/Swim50.jpg" alt="">
+        <span style="--i:51;"></span>
+        <img src="img/Swim/Swim51.jpg" alt="">
+        <span style="--i:52;"></span>
+        <img src="img/Swim/Swim52.jpg" alt="">
+        <span style="--i:53;"></span>
+        <img src="img/Swim/Swim53.jpg" alt="">
+        <span style="--i:54;"></span>
+        <img src="img/Swim/Swim54.jpg" alt="">
+        <span style="--i:55;"></span>
+        <img src="img/Swim/Swim55.jpg" alt="">
+        <span style="--i:56;"></span>
+        <img src="img/Swim/Swim56.jpg" alt="">
+        <span style="--i:57;"></span>
+        <img src="img/Swim/Swim57.jpg" alt="">
+        <span style="--i:58;"></span>
+        <img src="img/Swim/Swim58.jpg" alt="">
+        <span style="--i:59;"></span>
+        <img src="img/Swim/Swim59.jpg" alt="">
+        <span style="--i:60;"></span>
+        <img src="img/Swim/Swim60.jpg" alt="">
+        <span style="--i:61;"></span>
+        <img src="img/Swim/Swim61.jpg" alt="">
+        <span style="--i:62;"></span>
+        <img src="img/Swim/Swim62.jpg" alt="">
+        <span style="--i:63;"></span>
+        <img src="img/Swim/Swim63.jpg" alt="">
+        <span style="--i:64;"></span>
+        <img src="img/Swim/Swim64.jpg" alt="">
+        <span style="--i:65;"></span>
+        <img src="img/Swim/Swim65.jpg" alt="">
+        <span style="--i:66;"></span>
+        <img src="img/Swim/Swim66.jpg" alt="">
+        <span style="--i:67;"></span>
+        <img src="img/Swim/Swim67.jpg" alt="">
+        <span style="--i:68;"></span>
+        <img src="img/Swim/Swim68.jpg" alt="">
+        <span style="--i:69;"></span>
+        <img src="img/Swim/Swim69.jpg" alt="">
+        <span style="--i:70;"></span>
+        <img src="img/Swim/Swim70.jpg" alt="">
+        <span style="--i:71;"></span>
+        <img src="img/Swim/Swim71.jpg" alt="">
+        <span style="--i:72;"></span>
+        <img src="img/Swim/Swim72.jpg" alt="">
+        <span style="--i:73;"></span>
+        <img src="img/Swim/Swim73.jpg" alt="">
+        <span style="--i:74;"></span>
+        <img src="img/Swim/Swim74.jpg" alt="">
+        <span style="--i:75;"></span>
+        <img src="img/Swim/Swim75.jpg" alt="">
+        <span style="--i:76;"></span>
+        <img src="img/Swim/Swim76.jpg" alt="">
+        <span style="--i:77;"></span>
+        <img src="img/Swim/Swim77.jpg" alt="">
+        <span style="--i:78;"></span>
+        <img src="img/Swim/Swim78.jpg" alt="">
+        <span style="--i:79;"></span>
+        <img src="img/Swim/Swim79.jpg" alt="">
+        <span style="--i:80;"></span>
+        <img src="img/Swim/Swim80.jpg" alt="">
+        <span style="--i:81;"></span>
+        <img src="img/Swim/Swim81.jpg" alt="">
+        <span style="--i:82;"></span>
+        <img src="img/Swim/Swim82.jpg" alt="">
+        <span style="--i:83;"></span>
+        <img src="img/Swim/Swim83.jpg" alt="">
+        <span style="--i:84;"></span>
+        <img src="img/Swim/Swim84.jpg" alt="">
+        <span style="--i:85;"></span>
+        <img src="img/Swim/Swim85.jpg" alt="">
+        <span style="--i:86;"></span>
+        <img src="img/Swim/Swim86.jpg" alt="">
+        <span style="--i:87;"></span>
+        <img src="img/Swim/Swim87.jpg" alt="">
+        <span style="--i:88;"></span>
+        <img src="img/Swim/Swim88.jpg" alt="">
+        <span style="--i:89;"></span>
+        <img src="img/Swim/Swim89.jpg" alt="">
+        <span style="--i:90;"></span>
+        <img src="img/Swim/Swim90.jpg" alt="">
+        <span style="--i:91;"></span>
+        <img src="img/Swim/Swim91.jpg" alt="">
+        <span style="--i:92;"></span>
+        <img src="img/Swim/Swim92.jpg" alt="">
+        <span style="--i:93;"></span>
+        <img src="img/Swim/Swim93.jpg" alt="">
+        <span style="--i:94;"></span>
+        <img src="img/Swim/Swim94.jpg" alt="">
+        <span style="--i:95;"></span>
+        <img src="img/Swim/Swim95.jpg" alt="">
+        <span style="--i:96;"></span>
+        <img src="img/Swim/Swim96.jpg" alt="">
+        <span style="--i:97;"></span>
+        <img src="img/Swim/Swim97.jpg" alt="">
+        <span style="--i:98;"></span>
+        <img src="img/Swim/Swim98.jpg" alt="">
+        <span style="--i:99;"></span>
+        <img src="img/Swim/Swim99.jpg" alt="">
+        <span style="--i:100;"></span>
+        <img src="img/Swim/Swim100.jpg" alt="">
+        <span style="--i:101;"></span>
+        <img src="img/Swim/Swim101.jpg" alt="">
+        <span style="--i:102;"></span>
+        <img src="img/Swim/Swim102.jpg" alt="">
+        <span style="--i:103;"></span>
+        <img src="img/Swim/Swim103.jpg" alt="">
+        <span style="--i:104;"></span>
+        <img src="img/Swim/Swim104.jpg" alt="">
+        <span style="--i:105;"></span>
+        <img src="img/Swim/Swim105.jpg" alt="">
+        <span style="--i:106;"></span>
+        <img src="img/Swim/Swim106.jpg" alt="">
+        <span style="--i:107;"></span>
+        <img src="img/Swim/Swim107.jpg" alt="">
+        <span style="--i:108;"></span>
+        <img src="img/Swim/Swim108.jpg" alt="">
+        <span style="--i:109;"></span>
+        <img src="img/Swim/Swim109.jpg" alt="">
+        <span style="--i:110;"></span>
+        <img src="img/Swim/Swim110.jpg" alt="">
+        <span style="--i:111;"></span>
+        <img src="img/Swim/Swim111.jpg" alt="">
+        <span style="--i:112;"></span>
+        <img src="img/Swim/Swim112.jpg" alt="">
+        <span style="--i:113;"></span>
+        <img src="img/Swim/Swim113.jpg" alt="">
+        <span style="--i:114;"></span>
+        <img src="img/Swim/Swim114.jpg" alt="">
+        <span style="--i:115;"></span>
+        <img src="img/Swim/Swim115.jpg" alt="">
+        <span style="--i:116;"></span>
+        <img src="img/Swim/Swim116.jpg" alt="">
+        <span style="--i:117;"></span>
+        <img src="img/Swim/Swim117.jpg" alt="">
+        <span style="--i:118;"></span>
+        <img src="img/Swim/Swim118.jpg" alt="">
+        <span style="--i:119;"></span>
+        <img src="img/Swim/Swim119.jpg" alt="">
+    </div>
+</body>
+</html>

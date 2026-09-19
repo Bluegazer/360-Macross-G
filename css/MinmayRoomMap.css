@@ -1,0 +1,26 @@
+/* Estilos para el botón BACK inspirados en el menú original */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 13.3px;
+            font-weight: bold;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.4);
+            border: 0.3px solid white;
+            border-radius: 7px;
+            padding: 15px;
+            text-decoration: none;
+            text-shadow: 1px 0 black, 0 -1px black, -1px 0 black, 0 1px black;
+            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border 0.3s ease-in-out;
+            z-index: 1000; /* Asegura que el botón esté sobre la escena A-Frame */
+        }
+
+        .back-button:hover {
+            background: rgba(255, 0, 0, 0.21);
+            border: 1px solid white;
+            padding: 16px;
+            transform: scale(1.05); /* Ligeramente más grande que el original para un efecto visible */
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+        }

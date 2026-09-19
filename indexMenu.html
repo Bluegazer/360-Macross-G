@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Macross Girls</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="apple-touch-icon" href="img/favicon.png">
+    <link rel="stylesheet" href="css/indexMenu.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="Claudia.html" aria-label="Claudia LaSalle page">Claudia LaSalle</a></li>
+                <li><a href="Misa.html" aria-label="Misa Hayase page">Misa Hayase</a></li>
+                <li><a href="Kim.html" aria-label="Kim Kabirov page">Kim Kabirov</a></li>
+                <li><a href="Vanessa.html" aria-label="Vanessa Laird page">Vanessa Laird</a></li>
+                <li><a href="Shammy.html" aria-label="Shammy Milliome page">Shammy Milliome</a></li>
+                <li><a href="Milia.html" aria-label="Milia Fallyna Jenius page">Milia Fallyna Jenius</a></li>
+                <li><a href="Minmay.html" aria-label="Lynn Minmay page">Lynn Minmay</a></li>
+                <li><a href="indexMenuNSFW.html" id="nsfwLink" aria-label="NSFW page">NSFW</a></li>
+                <li><a href="CafeMap.html" aria-label="MAP 1 page">MAP 1</a></li>
+                <li><a href="BarMap.html" aria-label="MAP 2 page">MAP 2</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div id="text" class="text-shadow">
+            <p>Welcome to the Macross Girls 360º Gallery.</p>
+            <p>Choose any of the girls in the menu. Once there, move the mouse over the image to rotate the character.</p>
+            <p>MAP 1, MAP 2, MAP 3, and MAP 4 are 360º Panoramic maps. Press F11 for full screen.</p>
+            <p>Contact: <a href="mailto:guilleabm83@gmail.com?subject=360%20Macross%20Girls%20" aria-label="Email contact">guilleabm83@gmail.com</a></p>
+            <div class="volume-container">
+                <label for="volumeControl">Volume: </label>
+                <button id="volumeMinus" aria-label="Decrease volume">-</button>
+                <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.3" 
+                       aria-label="Menu volume control" aria-valuenow="0.3" aria-valuemin="0" aria-valuemax="1">
+                <button id="volumePlus" aria-label="Increase volume">+</button>
+                <button id="audioToggle" aria-label="Toggle audio">Audio: ON</button>
+            </div>
+            <!-- Creative Commons License -->
+            <div class="cc-license">
+                <a href="https://creativecommons.org">Macross Girls 360º Gallery</a> © 2025 by <a href="https://creativecommons.org">Guillermo Bello</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>
+                <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="Creative Commons" style="max-width: 1em; max-height: 1em; margin-left: .2em;">
+                <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="Attribution" style="max-width: 1em; max-height: 1em; margin-left: .2em;">
+                <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="NonCommercial" style="max-width: 1em; max-height: 1em; margin-left: .2em;">
+                <img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg" alt="NoDerivatives" style="max-width: 1em; max-height: 1em; margin-left: .2em;">
+            </div>
+        </div>
+    </main>
+    <!-- Modal for age verification -->
+    <div id="ageModal" style="display:none;">
+        <div class="modal-content">
+            <p>Enter your birth year to access NSFW content:</p>
+            <input type="number" id="birthYearInput" placeholder="e.g., 1990" aria-label="Birth year input">
+            <div>
+                <button id="submitAge">Submit</button>
+                <button id="cancelAge">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <audio id="hoverSound" src="snd/s02.ogg" preload="auto"></audio>
+    <audio id="backgroundMusic" src="snd/MACROSSKARAOKE.ogg" preload="auto" loop></audio>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('JavaScript initialized');
+
+            // Disable right-click
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                alert('Right-click is disabled to protect gallery content.');
+            });
+
+            // Audio elements
+            const hoverSound = document.getElementById('hoverSound');
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            const volumeControl = document.getElementById('volumeControl');
+            const volumeMinus = document.getElementById('volumeMinus');
+            const volumePlus = document.getElementById('volumePlus');
+            const audioToggle = document.getElementById('audioToggle');
+            const nsfwLink = document.getElementById('nsfwLink');
+            const links = document.querySelectorAll('nav ul li a');
+
+            // Check if audio elements exist
+            if (!hoverSound) console.error('Hover sound element not found');
+            if (!backgroundMusic) console.error('Background music element not found');
+
+            // Apply logarithmic volume scaling
+            const applyVolume = (sliderValue) => {
+                const logVolume = Math.pow(sliderValue, 2);
+                if (hoverSound) hoverSound.volume = logVolume;
+                if (backgroundMusic) backgroundMusic.volume = logVolume;
+                console.log('Slider value:', sliderValue, 'Effective volume:', logVolume);
+            };
+
+            // Set initial volume
+            const initialVolume = volumeControl?.value ?? 0.1;
+            applyVolume(initialVolume);
+            if (volumeControl) volumeControl.setAttribute('aria-valuenow', initialVolume);
+
+            // Volume control handler
+            if (volumeControl) {
+                volumeControl.addEventListener('input', () => {
+                    applyVolume(volumeControl.value);
+                    volumeControl.setAttribute('aria-valuenow', volumeControl.value);
+                });
+            }
+
+            // Volume buttons (+ and -)
+            if (volumeMinus && volumePlus) {
+                volumeMinus.addEventListener('click', () => {
+                    if (volumeControl.value > 0) {
+                        volumeControl.value = Math.max(0, parseFloat(volumeControl.value) - 0.01).toFixed(2);
+                        volumeControl.dispatchEvent(new Event('input'));
+                    }
+                });
+
+                volumePlus.addEventListener('click', () => {
+                    if (volumeControl.value < 1) {
+                        volumeControl.value = Math.min(1, parseFloat(volumeControl.value) + 0.01).toFixed(2);
+                        volumeControl.dispatchEvent(new Event('input'));
+                    }
+                });
+            }
+
+            // Audio toggle button
+            if (audioToggle) {
+                audioToggle.addEventListener('click', () => {
+                    const isAudioOn = audioToggle.textContent === 'Audio: ON';
+                    audioToggle.textContent = isAudioOn ? 'Audio: OFF' : 'Audio: ON';
+                    if (!isAudioOn) {
+                        if (backgroundMusic) backgroundMusic.play().catch(error => {
+                            console.error('Error playing background music:', error);
+                        });
+                    } else {
+                        if (backgroundMusic) backgroundMusic.pause();
+                        if (hoverSound) hoverSound.pause();
+                    }
+                });
+            }
+
+            // Play hover sound on link hover/focus (only if audio is on)
+            if (hoverSound) {
+                links.forEach((link, index) => {
+                    link.addEventListener('mouseover', () => {
+                        if (audioToggle.textContent === 'Audio: ON') {
+                            hoverSound.currentTime = 0;
+                            hoverSound.play().catch(error => {
+                                console.error(`Error playing hover sound on link ${index + 1}:`, error);
+                            });
+                        }
+                    });
+                    link.addEventListener('focus', () => {
+                        if (audioToggle.textContent === 'Audio: ON') {
+                            hoverSound.currentTime = 0;
+                            hoverSound.play().catch(error => {
+                                console.error(`Error playing hover sound on link ${index + 1}:`, error);
+                            });
+                        }
+                    });
+                });
+            }
+
+            // Play background music after user interaction
+            if (backgroundMusic) {
+                const playBackgroundMusic = () => {
+                    if (audioToggle.textContent === 'Audio: ON') {
+                        backgroundMusic.play().catch(error => {
+                            console.error('Error playing background music:', error);
+                        });
+                    }
+                    document.removeEventListener('click', playBackgroundMusic);
+                };
+                document.addEventListener('click', playBackgroundMusic);
+            }
+
+            // Age verification modal
+            if (nsfwLink) {
+                nsfwLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const ageModal = document.getElementById('ageModal');
+                    const birthYearInput = document.getElementById('birthYearInput');
+                    const submitAge = document.getElementById('submitAge');
+                    const cancelAge = document.getElementById('cancelAge');
+
+                    if (!ageModal || !birthYearInput || !submitAge || !cancelAge) {
+                        console.error('Modal elements not found');
+                        alert('Error: Age verification modal not available.');
+                        return;
+                    }
+
+                    ageModal.style.display = 'flex';
+                    birthYearInput.value = '';
+                    birthYearInput.focus();
+
+                    const handleSubmit = () => {
+                        const birthYear = parseInt(birthYearInput.value, 10);
+                        const currentYear = 2025;
+                        if (isNaN(birthYear) || birthYear < 1900 || birthYear > currentYear) {
+                            alert('Invalid input. Please enter a valid birth year (e.g., 1990).');
+                            return;
+                        }
+
+                        const age = currentYear - birthYear;
+                        if (age < 18) {
+                            alert('You must be 18 or older to access this content.');
+                            ageModal.style.display = 'none';
+                            return;
+                        }
+
+                        ageModal.style.display = 'none';
+                        window.location.href = nsfwLink.href;
+                    };
+
+                    submitAge.onclick = handleSubmit;
+                    birthYearInput.onkeypress = (event) => {
+                        if (event.key === 'Enter') handleSubmit();
+                    };
+
+                    cancelAge.onclick = () => {
+                        ageModal.style.display = 'none';
+                    };
+                });
+            } else {
+                console.error('NSFW link not found.');
+            }
+        });
+    </script>
+</body>
+</html>

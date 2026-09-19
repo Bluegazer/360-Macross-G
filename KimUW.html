@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Kim UW</title>
+    <link rel="icon" type="img/x-icon" href="img/favicon.ico">
+    <link rel="icon" type="img/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/KimUW.css">
+    <nav>
+        <ul>
+            <li><a href="indexMenuNSFW.html">BACK</a></li>
+        </ul>
+    </nav>
+    <script>
+      function inhabilitar(){
+          alert ("NO")
+          return false
+      }
+      
+      document.oncontextmenu = inhabilitar
+    // JavaScript to update overlay text and keep an image visible
+      document.addEventListener('DOMContentLoaded', () => {
+          const card = document.querySelector('.card');
+          const text = document.querySelector('.overlay-text');
+          const images = document.querySelectorAll('.card img');
+          let currentImageIndex = 0; // Track the currently visible image
+
+          // Set the first image as visible by default
+          images[0].style.opacity = 1;
+
+          card.addEventListener('mousemove', (e) => {
+              const rect = card.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const index = Math.floor((x / rect.width) * 120);
+              images.forEach((img, i) => {
+                  img.style.opacity = i === index ? 1 : 0;
+              });
+              currentImageIndex = index; // Update the current image index
+              text.textContent = ``;
+          });
+
+         // Ensure an image stays visible when mouse leaves
+          card.addEventListener('mouseleave', () => {
+              images.forEach((img, i) => {
+                  img.style.opacity = i === currentImageIndex ? 1 : 0;
+              });
+          });
+      });
+      
+document.addEventListener('DOMContentLoaded', () => {
+        const card = document.querySelector('.card');
+        const images = document.querySelectorAll('.card img');
+        const playBtn = document.querySelector('#playBtn');
+        const stopBtn = document.querySelector('#stopBtn');
+        let currentImageIndex = 0;
+        let autoPlayInterval = null;
+
+        if (images.length !== 120) {
+            console.error('Expected 120 images, found:', images.length);
+        }
+
+        images[0].style.opacity = 1;
+        stopBtn.disabled = true; // Deshabilitar el botón "Stop" al inicio
+
+        // Función para cambiar imágenes
+        const updateImage = (index) => {
+            images.forEach((img, i) => {
+                img.style.opacity = i === index ? 1 : 0;
+            });
+            currentImageIndex = index;
+        };
+
+        // Lógica de animación automática
+        const startAutoPlay = () => {
+            if (!autoPlayInterval) {
+                autoPlayInterval = setInterval(() => {
+                    currentImageIndex = (currentImageIndex + 1) % images.length; // Ciclo circular
+                    updateImage(currentImageIndex);
+                }, 50); // Cambia cada 50ms
+                playBtn.disabled = true;
+                stopBtn.disabled = false;
+            }
+        };
+
+        const stopAutoPlay = () => {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+                playBtn.disabled = false;
+                stopBtn.disabled = true;
+            }
+        };
+
+        // Evento para el botón Play
+        playBtn.addEventListener('click', startAutoPlay);
+
+        // Evento para el botón Stop
+        stopBtn.addEventListener('click', stopAutoPlay);
+
+        // Detener animación al interactuar con el mouse
+        let timeout;
+        card.addEventListener('mousemove', (e) => {
+            stopAutoPlay(); // Detener animación automática
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+                updateImage(index);
+            }, 10);
+        });
+
+        card.addEventListener('mouseleave', () => {
+            updateImage(currentImageIndex);
+        });
+
+        // Soporte para teclado
+        card.addEventListener('keydown', (e) => {
+            stopAutoPlay(); // Detener animación automática
+            if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+                currentImageIndex--;
+            } else if (e.key === 'ArrowRight' && currentImageIndex < images.length - 1) {
+                currentImageIndex++;
+            }
+            updateImage(currentImageIndex);
+        });
+
+        // Soporte para touch (opcional, para dispositivos móviles)
+        card.addEventListener('touchmove', (e) => {
+            stopAutoPlay(); // Detener animación automática
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = card.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+            updateImage(index);
+        });
+    });
+    </script>
+</head>
+<body>
+    <div id="arrow">
+        <h1>&#9668;Kim Kabirov&#9658;</h1>
+        <div class="button-container">
+            <button id="playBtn">&#9658; PLAY</button>
+            <button id="stopBtn">&#9632; STOP</button>
+        </div>
+    </div>
+    <div class="card">
+        <span style="--i:0;"></span>
+        <img src="img/Kim/KimUW0.jpg" alt="">
+        <span style="--i:1;"></span>
+        <img src="img/Kim/KimUW1.jpg" alt="">
+        <span style="--i:2;"></span>
+        <img src="img/Kim/KimUW2.jpg" alt="">
+        <span style="--i:3;"></span>
+        <img src="img/Kim/KimUW3.jpg" alt="">
+        <span style="--i:4;"></span>
+        <img src="img/Kim/KimUW4.jpg" alt="">
+        <span style="--i:5;"></span>
+        <img src="img/Kim/KimUW5.jpg" alt="">
+        <span style="--i:6;"></span>
+        <img src="img/Kim/KimUW6.jpg" alt="">
+        <span style="--i:7;"></span>
+        <img src="img/Kim/KimUW7.jpg" alt="">
+        <span style="--i:8;"></span>
+        <img src="img/Kim/KimUW8.jpg" alt="">
+        <span style="--i:9;"></span>
+        <img src="img/Kim/KimUW9.jpg" alt="">
+        <span style="--i:10;"></span>
+        <img src="img/Kim/KimUW10.jpg" alt="">
+        <span style="--i:11;"></span>
+        <img src="img/Kim/KimUW11.jpg" alt="">
+        <span style="--i:12;"></span>
+        <img src="img/Kim/KimUW12.jpg" alt="">
+        <span style="--i:13;"></span>
+        <img src="img/Kim/KimUW13.jpg" alt="">
+        <span style="--i:14;"></span>
+        <img src="img/Kim/KimUW14.jpg" alt="">
+        <span style="--i:15;"></span>
+        <img src="img/Kim/KimUW15.jpg" alt="">
+        <span style="--i:16;"></span>
+        <img src="img/Kim/KimUW16.jpg" alt="">
+        <span style="--i:17;"></span>
+        <img src="img/Kim/KimUW17.jpg" alt="">
+        <span style="--i:18;"></span>
+        <img src="img/Kim/KimUW18.jpg" alt="">
+        <span style="--i:19;"></span>
+        <img src="img/Kim/KimUW19.jpg" alt="">
+        <span style="--i:20;"></span>
+        <img src="img/Kim/KimUW20.jpg" alt="">
+        <span style="--i:21;"></span>
+        <img src="img/Kim/KimUW21.jpg" alt="">
+        <span style="--i:22;"></span>
+        <img src="img/Kim/KimUW22.jpg" alt="">
+        <span style="--i:23;"></span>
+        <img src="img/Kim/KimUW23.jpg" alt="">
+        <span style="--i:24;"></span>
+        <img src="img/Kim/KimUW24.jpg" alt="">
+        <span style="--i:25;"></span>
+        <img src="img/Kim/KimUW25.jpg" alt="">
+        <span style="--i:26;"></span>
+        <img src="img/Kim/KimUW26.jpg" alt="">
+        <span style="--i:27;"></span>
+        <img src="img/Kim/KimUW27.jpg" alt="">
+        <span style="--i:28;"></span>
+        <img src="img/Kim/KimUW28.jpg" alt="">
+        <span style="--i:29;"></span>
+        <img src="img/Kim/KimUW29.jpg" alt="">
+        <span style="--i:30;"></span>
+        <img src="img/Kim/KimUW30.jpg" alt="">
+        <span style="--i:31;"></span>
+        <img src="img/Kim/KimUW31.jpg" alt="">
+        <span style="--i:32;"></span>
+        <img src="img/Kim/KimUW32.jpg" alt="">
+        <span style="--i:33;"></span>
+        <img src="img/Kim/KimUW33.jpg" alt="">
+        <span style="--i:34;"></span>
+        <img src="img/Kim/KimUW34.jpg" alt="">
+        <span style="--i:35;"></span>
+        <img src="img/Kim/KimUW35.jpg" alt="">
+        <span style="--i:36;"></span>
+        <img src="img/Kim/KimUW36.jpg" alt="">
+        <span style="--i:37;"></span>
+        <img src="img/Kim/KimUW37.jpg" alt="">
+        <span style="--i:38;"></span>
+        <img src="img/Kim/KimUW38.jpg" alt="">
+        <span style="--i:39;"></span>
+        <img src="img/Kim/KimUW39.jpg" alt="">
+        <span style="--i:40;"></span>
+        <img src="img/Kim/KimUW40.jpg" alt="">
+        <span style="--i:41;"></span>
+        <img src="img/Kim/KimUW41.jpg" alt="">
+        <span style="--i:42;"></span>
+        <img src="img/Kim/KimUW42.jpg" alt="">
+        <span style="--i:43;"></span>
+        <img src="img/Kim/KimUW43.jpg" alt="">
+        <span style="--i:44;"></span>
+        <img src="img/Kim/KimUW44.jpg" alt="">
+        <span style="--i:45;"></span>
+        <img src="img/Kim/KimUW45.jpg" alt="">
+        <span style="--i:46;"></span>
+        <img src="img/Kim/KimUW46.jpg" alt="">
+        <span style="--i:47;"></span>
+        <img src="img/Kim/KimUW47.jpg" alt="">
+        <span style="--i:48;"></span>
+        <img src="img/Kim/KimUW48.jpg" alt="">
+        <span style="--i:49;"></span>
+        <img src="img/Kim/KimUW49.jpg" alt="">
+        <span style="--i:50;"></span>
+        <img src="img/Kim/KimUW50.jpg" alt="">
+        <span style="--i:51;"></span>
+        <img src="img/Kim/KimUW51.jpg" alt="">
+        <span style="--i:52;"></span>
+        <img src="img/Kim/KimUW52.jpg" alt="">
+        <span style="--i:53;"></span>
+        <img src="img/Kim/KimUW53.jpg" alt="">
+        <span style="--i:54;"></span>
+        <img src="img/Kim/KimUW54.jpg" alt="">
+        <span style="--i:55;"></span>
+        <img src="img/Kim/KimUW55.jpg" alt="">
+        <span style="--i:56;"></span>
+        <img src="img/Kim/KimUW56.jpg" alt="">
+        <span style="--i:57;"></span>
+        <img src="img/Kim/KimUW57.jpg" alt="">
+        <span style="--i:58;"></span>
+        <img src="img/Kim/KimUW58.jpg" alt="">
+        <span style="--i:59;"></span>
+        <img src="img/Kim/KimUW59.jpg" alt="">
+        <span style="--i:60;"></span>
+        <img src="img/Kim/KimUW60.jpg" alt="">
+        <span style="--i:61;"></span>
+        <img src="img/Kim/KimUW61.jpg" alt="">
+        <span style="--i:62;"></span>
+        <img src="img/Kim/KimUW62.jpg" alt="">
+        <span style="--i:63;"></span>
+        <img src="img/Kim/KimUW63.jpg" alt="">
+        <span style="--i:64;"></span>
+        <img src="img/Kim/KimUW64.jpg" alt="">
+        <span style="--i:65;"></span>
+        <img src="img/Kim/KimUW65.jpg" alt="">
+        <span style="--i:66;"></span>
+        <img src="img/Kim/KimUW66.jpg" alt="">
+        <span style="--i:67;"></span>
+        <img src="img/Kim/KimUW67.jpg" alt="">
+        <span style="--i:68;"></span>
+        <img src="img/Kim/KimUW68.jpg" alt="">
+        <span style="--i:69;"></span>
+        <img src="img/Kim/KimUW69.jpg" alt="">
+        <span style="--i:70;"></span>
+        <img src="img/Kim/KimUW70.jpg" alt="">
+        <span style="--i:71;"></span>
+        <img src="img/Kim/KimUW71.jpg" alt="">
+        <span style="--i:72;"></span>
+        <img src="img/Kim/KimUW72.jpg" alt="">
+        <span style="--i:73;"></span>
+        <img src="img/Kim/KimUW73.jpg" alt="">
+        <span style="--i:74;"></span>
+        <img src="img/Kim/KimUW74.jpg" alt="">
+        <span style="--i:75;"></span>
+        <img src="img/Kim/KimUW75.jpg" alt="">
+        <span style="--i:76;"></span>
+        <img src="img/Kim/KimUW76.jpg" alt="">
+        <span style="--i:77;"></span>
+        <img src="img/Kim/KimUW77.jpg" alt="">
+        <span style="--i:78;"></span>
+        <img src="img/Kim/KimUW78.jpg" alt="">
+        <span style="--i:79;"></span>
+        <img src="img/Kim/KimUW79.jpg" alt="">
+        <span style="--i:80;"></span>
+        <img src="img/Kim/KimUW80.jpg" alt="">
+        <span style="--i:81;"></span>
+        <img src="img/Kim/KimUW81.jpg" alt="">
+        <span style="--i:82;"></span>
+        <img src="img/Kim/KimUW82.jpg" alt="">
+        <span style="--i:83;"></span>
+        <img src="img/Kim/KimUW83.jpg" alt="">
+        <span style="--i:84;"></span>
+        <img src="img/Kim/KimUW84.jpg" alt="">
+        <span style="--i:85;"></span>
+        <img src="img/Kim/KimUW85.jpg" alt="">
+        <span style="--i:86;"></span>
+        <img src="img/Kim/KimUW86.jpg" alt="">
+        <span style="--i:87;"></span>
+        <img src="img/Kim/KimUW87.jpg" alt="">
+        <span style="--i:88;"></span>
+        <img src="img/Kim/KimUW88.jpg" alt="">
+        <span style="--i:89;"></span>
+        <img src="img/Kim/KimUW89.jpg" alt="">
+        <span style="--i:90;"></span>
+        <img src="img/Kim/KimUW90.jpg" alt="">
+        <span style="--i:91;"></span>
+        <img src="img/Kim/KimUW91.jpg" alt="">
+        <span style="--i:92;"></span>
+        <img src="img/Kim/KimUW92.jpg" alt="">
+        <span style="--i:93;"></span>
+        <img src="img/Kim/KimUW93.jpg" alt="">
+        <span style="--i:94;"></span>
+        <img src="img/Kim/KimUW94.jpg" alt="">
+        <span style="--i:95;"></span>
+        <img src="img/Kim/KimUW95.jpg" alt="">
+        <span style="--i:96;"></span>
+        <img src="img/Kim/KimUW96.jpg" alt="">
+        <span style="--i:97;"></span>
+        <img src="img/Kim/KimUW97.jpg" alt="">
+        <span style="--i:98;"></span>
+        <img src="img/Kim/KimUW98.jpg" alt="">
+        <span style="--i:99;"></span>
+        <img src="img/Kim/KimUW99.jpg" alt="">
+        <span style="--i:100;"></span>
+        <img src="img/Kim/KimUW100.jpg" alt="">
+        <span style="--i:101;"></span>
+        <img src="img/Kim/KimUW101.jpg" alt="">
+        <span style="--i:102;"></span>
+        <img src="img/Kim/KimUW102.jpg" alt="">
+        <span style="--i:103;"></span>
+        <img src="img/Kim/KimUW103.jpg" alt="">
+        <span style="--i:104;"></span>
+        <img src="img/Kim/KimUW104.jpg" alt="">
+        <span style="--i:105;"></span>
+        <img src="img/Kim/KimUW105.jpg" alt="">
+        <span style="--i:106;"></span>
+        <img src="img/Kim/KimUW106.jpg" alt="">
+        <span style="--i:107;"></span>
+        <img src="img/Kim/KimUW107.jpg" alt="">
+        <span style="--i:108;"></span>
+        <img src="img/Kim/KimUW108.jpg" alt="">
+        <span style="--i:109;"></span>
+        <img src="img/Kim/KimUW109.jpg" alt="">
+        <span style="--i:110;"></span>
+        <img src="img/Kim/KimUW110.jpg" alt="">
+        <span style="--i:111;"></span>
+        <img src="img/Kim/KimUW111.jpg" alt="">
+        <span style="--i:112;"></span>
+        <img src="img/Kim/KimUW112.jpg" alt="">
+        <span style="--i:113;"></span>
+        <img src="img/Kim/KimUW113.jpg" alt="">
+        <span style="--i:114;"></span>
+        <img src="img/Kim/KimUW114.jpg" alt="">
+        <span style="--i:115;"></span>
+        <img src="img/Kim/KimUW115.jpg" alt="">
+        <span style="--i:116;"></span>
+        <img src="img/Kim/KimUW116.jpg" alt="">
+        <span style="--i:117;"></span>
+        <img src="img/Kim/KimUW117.jpg" alt="">
+        <span style="--i:118;"></span>
+        <img src="img/Kim/KimUW118.jpg" alt="">
+        <span style="--i:119;"></span>
+        <img src="img/Kim/KimUW119.jpg" alt="">
+    </div>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Milia</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/Milia.css">
+    <script>
+      function inhabilitar(){
+          alert("NO");
+          return false;
+      }
+      
+      document.oncontextmenu = inhabilitar;
+      
+      document.addEventListener('DOMContentLoaded', () => {
+          const card = document.querySelector('.card');
+          const text = document.querySelector('.overlay-text');
+          const images = document.querySelectorAll('.card img');
+          const infoBtn = document.querySelector('#infoBtn');
+          let currentImageIndex = 0;
+          let isInfoVisible = false;
+
+          images[0].style.opacity = 1;
+          text.classList.remove('visible'); // Ensure initially hidden
+
+          card.addEventListener('mousemove', (e) => {
+              const rect = card.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const index = Math.floor((x / rect.width) * 120);
+              images.forEach((img, i) => {
+                  img.style.opacity = i === index ? 1 : 0;
+              });
+              currentImageIndex = index;
+              text.innerHTML = `
+                <p class="stat">Milia Fallyna Jenius</p>
+                <p class="narrative">She is renown as the "Zentradi ace Milia" even among her male counterparts, and respected for her prowess in her powered suit.
+				After an unusual courtship, she marry with ace pilot Max Jenius, and have seven daughters. After Space War I, she led the Dancing Skull special forces team with Max. 
+				She also helmed the Eagle Nest Aerial Tactics Center as "Eagle Mother" before being elected mayor of Macross 7's City 7.</p>
+                <p class="stat">Name: Milia Fallyna Jenius</p>
+                <p class="stat">Birthdate: Unknown</p>
+                <p class="stat">Birthplace: Zentradi Clone Synthesis System</p>
+                <p class="stat">Ethnicity: Zentradi</p>
+                <p class="stat">Age: 15</p>
+                <p class="stat">Blood Type: BZ</p>
+                <p class="stat">Height: 855 cm (Miclone: 171 cm)</p>
+                <p class="stat">Meas: 415-290-420 cm (83-58-84 cm)</p>
+                <p class="stat">Gender: Female</p>
+                <p class="stat">Weight: 6250 Kg (50 Kg)</p>
+                <p class="stat">Occ: Powered Suit Pilot. Fighter Pilot. Test Pilot. Ship Second-in-Command. Mayor.</p>
+                <p class="stat">Rank: 2nd Lt. 1st Lt. Captain.</p>`;
+          });
+
+		  infoBtn.addEventListener('click', () => {
+              isInfoVisible = !isInfoVisible;
+              text.classList.toggle('visible', isInfoVisible); // Toggle visibility class
+              infoBtn.textContent = isInfoVisible ? 'HIDE INFO' : 'INFO';
+          });
+
+          card.addEventListener('mouseleave', () => {
+              images.forEach((img, i) => {
+                  img.style.opacity = i === currentImageIndex ? 1 : 0;
+              });
+          });
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+          const card = document.querySelector('.card');
+          const images = document.querySelectorAll('.card img');
+          const playBtn = document.querySelector('#playBtn');
+          const stopBtn = document.querySelector('#stopBtn');
+          let currentImageIndex = 0;
+          let autoPlayInterval = null;
+
+          if (images.length !== 120) {
+              console.error('Expected 120 images, found:', images.length);
+          }
+
+          images[0].style.opacity = 1;
+          stopBtn.disabled = true;
+
+          const updateImage = (index) => {
+              images.forEach((img, i) => {
+                  img.style.opacity = i === index ? 1 : 0;
+              });
+              currentImageIndex = index;
+          };
+
+          const startAutoPlay = () => {
+              if (!autoPlayInterval) {
+                  autoPlayInterval = setInterval(() => {
+                      currentImageIndex = (currentImageIndex + 1) % images.length;
+                      updateImage(currentImageIndex);
+                  }, 50);
+                  playBtn.disabled = true;
+                  stopBtn.disabled = false;
+              }
+          };
+
+          const stopAutoPlay = () => {
+              if (autoPlayInterval) {
+                  clearInterval(autoPlayInterval);
+                  autoPlayInterval = null;
+                  playBtn.disabled = false;
+                  stopBtn.disabled = true;
+              }
+          };
+
+          playBtn.addEventListener('click', startAutoPlay);
+          stopBtn.addEventListener('click', stopAutoPlay);
+
+          let timeout;
+          card.addEventListener('mousemove', (e) => {
+              stopAutoPlay();
+              clearTimeout(timeout);
+              timeout = setTimeout(() => {
+                  const rect = card.getBoundingClientRect();
+                  const x = e.clientX - rect.left;
+                  const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+                  updateImage(index);
+              }, 10);
+          });
+
+          card.addEventListener('mouseleave', () => {
+              updateImage(currentImageIndex);
+          });
+
+          card.addEventListener('keydown', (e) => {
+              stopAutoPlay();
+              if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+                  currentImageIndex--;
+              } else if (e.key === 'ArrowRight' && currentImageIndex < images.length - 1) {
+                  currentImageIndex++;
+              }
+              updateImage(currentImageIndex);
+          });
+
+          card.addEventListener('touchmove', (e) => {
+              stopAutoPlay();
+              e.preventDefault();
+              const touch = e.touches[0];
+              const rect = card.getBoundingClientRect();
+              const x = touch.clientX - rect.left;
+              const index = Math.min(Math.floor((x / rect.width) * images.length), images.length - 1);
+              updateImage(index);
+          });
+      });
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="indexMenu.html">BACK</a></li>
+        </ul>
+    </nav>
+    <div id="arrow">
+        <h1>&#9668;Milia Fallyna Jenius&#9658;</h1>
+        <div class="button-container">
+            <button id="playBtn">&#9658; PLAY</button>
+            <button id="stopBtn">&#9632; STOP</button>
+            <button id="infoBtn">INFO</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="overlay-text">
+            <p class="stat">Milia Fallyna Jenius</p>
+                <p class="narrative">She is renown as the "Zentradi ace Milia" even among her male counterparts, and respected for her prowess in her powered suit.
+				After an unusual courtship, she marry with ace pilot Max Jenius, and have seven daughters. After Space War I, she led the Dancing Skull special forces team with Max. 
+				She also helmed the Eagle Nest Aerial Tactics Center as "Eagle Mother" before being elected mayor of Macross 7's City 7.</p>
+                <p class="stat">Name: Milia Fallyna Jenius</p>
+                <p class="stat">Birthdate: Unknown</p>
+                <p class="stat">Birthplace: Zentradi Clone Synthesis System</p>
+                <p class="stat">Ethnicity: Zentradi</p>
+                <p class="stat">Age: 15</p>
+                <p class="stat">Blood Type: BZ</p>
+                <p class="stat">Height: 855 cm (Miclone: 171 cm)</p>
+                <p class="stat">Meas: 415-290-420 cm (83-58-84 cm)</p>
+                <p class="stat">Gender: Female</p>
+                <p class="stat">Weight: 6250 Kg (50 Kg)</p>
+                <p class="stat">Occ: Powered Suit Pilot. Fighter Pilot. Test Pilot. Ship Second-in-Command. Mayor.</p>
+                <p class="stat">Rank: 2nd Lt. 1st Lt. Captain.</p>
+        </div>
+        <span style="--i:0;"></span>
+        <img src="img/Milia/Milia0.jpg" alt="">
+        <span style="--i:1;"></span>
+        <img src="img/Milia/Milia1.jpg" alt="">
+        <span style="--i:2;"></span>
+        <img src="img/Milia/Milia2.jpg" alt="">
+        <span style="--i:3;"></span>
+        <img src="img/Milia/Milia3.jpg" alt="">
+        <span style="--i:4;"></span>
+        <img src="img/Milia/Milia4.jpg" alt="">
+        <span style="--i:5;"></span>
+        <img src="img/Milia/Milia5.jpg" alt="">
+        <span style="--i:6;"></span>
+        <img src="img/Milia/Milia6.jpg" alt="">
+        <span style="--i:7;"></span>
+        <img src="img/Milia/Milia7.jpg" alt="">
+        <span style="--i:8;"></span>
+        <img src="img/Milia/Milia8.jpg" alt="">
+        <span style="--i:9;"></span>
+        <img src="img/Milia/Milia9.jpg" alt="">
+        <span style="--i:10;"></span>
+        <img src="img/Milia/Milia10.jpg" alt="">
+        <span style="--i:11;"></span>
+        <img src="img/Milia/Milia11.jpg" alt="">
+        <span style="--i:12;"></span>
+        <img src="img/Milia/Milia12.jpg" alt="">
+        <span style="--i:13;"></span>
+        <img src="img/Milia/Milia13.jpg" alt="">
+        <span style="--i:14;"></span>
+        <img src="img/Milia/Milia14.jpg" alt="">
+        <span style="--i:15;"></span>
+        <img src="img/Milia/Milia15.jpg" alt="">
+        <span style="--i:16;"></span>
+        <img src="img/Milia/Milia16.jpg" alt="">
+        <span style="--i:17;"></span>
+        <img src="img/Milia/Milia17.jpg" alt="">
+        <span style="--i:18;"></span>
+        <img src="img/Milia/Milia18.jpg" alt="">
+        <span style="--i:19;"></span>
+        <img src="img/Milia/Milia19.jpg" alt="">
+        <span style="--i:20;"></span>
+        <img src="img/Milia/Milia20.jpg" alt="">
+        <span style="--i:21;"></span>
+        <img src="img/Milia/Milia21.jpg" alt="">
+        <span style="--i:22;"></span>
+        <img src="img/Milia/Milia22.jpg" alt="">
+        <span style="--i:23;"></span>
+        <img src="img/Milia/Milia23.jpg" alt="">
+        <span style="--i:24;"></span>
+        <img src="img/Milia/Milia24.jpg" alt="">
+        <span style="--i:25;"></span>
+        <img src="img/Milia/Milia25.jpg" alt="">
+        <span style="--i:26;"></span>
+        <img src="img/Milia/Milia26.jpg" alt="">
+        <span style="--i:27;"></span>
+        <img src="img/Milia/Milia27.jpg" alt="">
+        <span style="--i:28;"></span>
+        <img src="img/Milia/Milia28.jpg" alt="">
+        <span style="--i:29;"></span>
+        <img src="img/Milia/Milia29.jpg" alt="">
+        <span style="--i:30;"></span>
+        <img src="img/Milia/Milia30.jpg" alt="">
+        <span style="--i:31;"></span>
+        <img src="img/Milia/Milia31.jpg" alt="">
+        <span style="--i:32;"></span>
+        <img src="img/Milia/Milia32.jpg" alt="">
+        <span style="--i:33;"></span>
+        <img src="img/Milia/Milia33.jpg" alt="">
+        <span style="--i:34;"></span>
+        <img src="img/Milia/Milia34.jpg" alt="">
+        <span style="--i:35;"></span>
+        <img src="img/Milia/Milia35.jpg" alt="">
+        <span style="--i:36;"></span>
+        <img src="img/Milia/Milia36.jpg" alt="">
+        <span style="--i:37;"></span>
+        <img src="img/Milia/Milia37.jpg" alt="">
+        <span style="--i:38;"></span>
+        <img src="img/Milia/Milia38.jpg" alt="">
+        <span style="--i:39;"></span>
+        <img src="img/Milia/Milia39.jpg" alt="">
+        <span style="--i:40;"></span>
+        <img src="img/Milia/Milia40.jpg" alt="">
+        <span style="--i:41;"></span>
+        <img src="img/Milia/Milia41.jpg" alt="">
+        <span style="--i:42;"></span>
+        <img src="img/Milia/Milia42.jpg" alt="">
+        <span style="--i:43;"></span>
+        <img src="img/Milia/Milia43.jpg" alt="">
+        <span style="--i:44;"></span>
+        <img src="img/Milia/Milia44.jpg" alt="">
+        <span style="--i:45;"></span>
+        <img src="img/Milia/Milia45.jpg" alt="">
+        <span style="--i:46;"></span>
+        <img src="img/Milia/Milia46.jpg" alt="">
+        <span style="--i:47;"></span>
+        <img src="img/Milia/Milia47.jpg" alt="">
+        <span style="--i:48;"></span>
+        <img src="img/Milia/Milia48.jpg" alt="">
+        <span style="--i:49;"></span>
+        <img src="img/Milia/Milia49.jpg" alt="">
+        <span style="--i:50;"></span>
+        <img src="img/Milia/Milia50.jpg" alt="">
+        <span style="--i:51;"></span>
+        <img src="img/Milia/Milia51.jpg" alt="">
+        <span style="--i:52;"></span>
+        <img src="img/Milia/Milia52.jpg" alt="">
+        <span style="--i:53;"></span>
+        <img src="img/Milia/Milia53.jpg" alt="">
+        <span style="--i:54;"></span>
+        <img src="img/Milia/Milia54.jpg" alt="">
+        <span style="--i:55;"></span>
+        <img src="img/Milia/Milia55.jpg" alt="">
+        <span style="--i:56;"></span>
+        <img src="img/Milia/Milia56.jpg" alt="">
+        <span style="--i:57;"></span>
+        <img src="img/Milia/Milia57.jpg" alt="">
+        <span style="--i:58;"></span>
+        <img src="img/Milia/Milia58.jpg" alt="">
+        <span style="--i:59;"></span>
+        <img src="img/Milia/Milia59.jpg" alt="">
+        <span style="--i:60;"></span>
+        <img src="img/Milia/Milia60.jpg" alt="">
+        <span style="--i:61;"></span>
+        <img src="img/Milia/Milia61.jpg" alt="">
+        <span style="--i:62;"></span>
+        <img src="img/Milia/Milia62.jpg" alt="">
+        <span style="--i:63;"></span>
+        <img src="img/Milia/Milia63.jpg" alt="">
+        <span style="--i:64;"></span>
+        <img src="img/Milia/Milia64.jpg" alt="">
+        <span style="--i:65;"></span>
+        <img src="img/Milia/Milia65.jpg" alt="">
+        <span style="--i:66;"></span>
+        <img src="img/Milia/Milia66.jpg" alt="">
+        <span style="--i:67;"></span>
+        <img src="img/Milia/Milia67.jpg" alt="">
+        <span style="--i:68;"></span>
+        <img src="img/Milia/Milia68.jpg" alt="">
+        <span style="--i:69;"></span>
+        <img src="img/Milia/Milia69.jpg" alt="">
+        <span style="--i:70;"></span>
+        <img src="img/Milia/Milia70.jpg" alt="">
+        <span style="--i:71;"></span>
+        <img src="img/Milia/Milia71.jpg" alt="">
+        <span style="--i:72;"></span>
+        <img src="img/Milia/Milia72.jpg" alt="">
+        <span style="--i:73;"></span>
+        <img src="img/Milia/Milia73.jpg" alt="">
+        <span style="--i:74;"></span>
+        <img src="img/Milia/Milia74.jpg" alt="">
+        <span style="--i:75;"></span>
+        <img src="img/Milia/Milia75.jpg" alt="">
+        <span style="--i:76;"></span>
+        <img src="img/Milia/Milia76.jpg" alt="">
+        <span style="--i:77;"></span>
+        <img src="img/Milia/Milia77.jpg" alt="">
+        <span style="--i:78;"></span>
+        <img src="img/Milia/Milia78.jpg" alt="">
+        <span style="--i:79;"></span>
+        <img src="img/Milia/Milia79.jpg" alt="">
+        <span style="--i:80;"></span>
+        <img src="img/Milia/Milia80.jpg" alt="">
+        <span style="--i:81;"></span>
+        <img src="img/Milia/Milia81.jpg" alt="">
+        <span style="--i:82;"></span>
+        <img src="img/Milia/Milia82.jpg" alt="">
+        <span style="--i:83;"></span>
+        <img src="img/Milia/Milia83.jpg" alt="">
+        <span style="--i:84;"></span>
+        <img src="img/Milia/Milia84.jpg" alt="">
+        <span style="--i:85;"></span>
+        <img src="img/Milia/Milia85.jpg" alt="">
+        <span style="--i:86;"></span>
+        <img src="img/Milia/Milia86.jpg" alt="">
+        <span style="--i:87;"></span>
+        <img src="img/Milia/Milia87.jpg" alt="">
+        <span style="--i:88;"></span>
+        <img src="img/Milia/Milia88.jpg" alt="">
+        <span style="--i:89;"></span>
+        <img src="img/Milia/Milia89.jpg" alt="">
+        <span style="--i:90;"></span>
+        <img src="img/Milia/Milia90.jpg" alt="">
+        <span style="--i:91;"></span>
+        <img src="img/Milia/Milia91.jpg" alt="">
+        <span style="--i:92;"></span>
+        <img src="img/Milia/Milia92.jpg" alt="">
+        <span style="--i:93;"></span>
+        <img src="img/Milia/Milia93.jpg" alt="">
+        <span style="--i:94;"></span>
+        <img src="img/Milia/Milia94.jpg" alt="">
+        <span style="--i:95;"></span>
+        <img src="img/Milia/Milia95.jpg" alt="">
+        <span style="--i:96;"></span>
+        <img src="img/Milia/Milia96.jpg" alt="">
+        <span style="--i:97;"></span>
+        <img src="img/Milia/Milia97.jpg" alt="">
+        <span style="--i:98;"></span>
+        <img src="img/Milia/Milia98.jpg" alt="">
+        <span style="--i:99;"></span>
+        <img src="img/Milia/Milia99.jpg" alt="">
+        <span style="--i:100;"></span>
+        <img src="img/Milia/Milia100.jpg" alt="">
+        <span style="--i:101;"></span>
+        <img src="img/Milia/Milia101.jpg" alt="">
+        <span style="--i:102;"></span>
+        <img src="img/Milia/Milia102.jpg" alt="">
+        <span style="--i:103;"></span>
+        <img src="img/Milia/Milia103.jpg" alt="">
+        <span style="--i:104;"></span>
+        <img src="img/Milia/Milia104.jpg" alt="">
+        <span style="--i:105;"></span>
+        <img src="img/Milia/Milia105.jpg" alt="">
+        <span style="--i:106;"></span>
+        <img src="img/Milia/Milia106.jpg" alt="">
+        <span style="--i:107;"></span>
+        <img src="img/Milia/Milia107.jpg" alt="">
+        <span style="--i:108;"></span>
+        <img src="img/Milia/Milia108.jpg" alt="">
+        <span style="--i:109;"></span>
+        <img src="img/Milia/Milia109.jpg" alt="">
+        <span style="--i:110;"></span>
+        <img src="img/Milia/Milia110.jpg" alt="">
+        <span style="--i:111;"></span>
+        <img src="img/Milia/Milia111.jpg" alt="">
+        <span style="--i:112;"></span>
+        <img src="img/Milia/Milia112.jpg" alt="">
+        <span style="--i:113;"></span>
+        <img src="img/Milia/Milia113.jpg" alt="">
+        <span style="--i:114;"></span>
+        <img src="img/Milia/Milia114.jpg" alt="">
+        <span style="--i:115;"></span>
+        <img src="img/Milia/Milia115.jpg" alt="">
+        <span style="--i:116;"></span>
+        <img src="img/Milia/Milia116.jpg" alt="">
+        <span style="--i:117;"></span>
+        <img src="img/Milia/Milia117.jpg" alt="">
+        <span style="--i:118;"></span>
+        <img src="img/Milia/Milia118.jpg" alt="">
+        <span style="--i:119;"></span>
+        <img src="img/Milia/Milia119.jpg" alt="">
+    </div>
+	<!-- Filtro SVG para ruido estático -->
+    <svg id="noiseFilter">
+        <defs>
+            <filter id="noiseFilter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+                <feColorMatrix type="saturate" values="0"/>
+                <feComponentTransfer>
+                    <feFuncR type="linear" slope="0.5" intercept="0.25"/>
+                    <feFuncG type="linear" slope="0.5" intercept="0.25"/>
+                    <feFuncB type="linear" slope="0.5" intercept="0.25"/>
+                </feComponentTransfer>
+            </filter>
+        </defs>
+    </svg>
+</body>
+</html>
